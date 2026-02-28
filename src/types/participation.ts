@@ -73,3 +73,20 @@ export interface ParticipationsResponse {
 export interface ApplicationsResponse {
   applications: Application[]
 }
+
+// @TASK T-04 - 피드백 작성 Types
+export type RatingItemType = 'UI_UX' | 'PERFORMANCE' | 'FUNCTIONALITY' | 'STABILITY'
+
+export interface FeedbackRating {
+  itemType: RatingItemType
+  score: number
+}
+
+export interface BugReport {
+  id: number
+  participationId: number
+  testerId: number
+  title: string
+  description: string
+  createdAt: string
+}
