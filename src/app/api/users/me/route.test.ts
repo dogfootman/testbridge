@@ -1,9 +1,10 @@
 /**
- * @jest-environment @edge-runtime/jest-environment
+ * @jest-environment node
  */
 
 import { NextRequest } from 'next/server'
 import { GET } from './route'
+import { MockNextRequest } from '@/tests/utils/mockRequest'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
@@ -28,7 +29,7 @@ describe('GET /api/users/me', () => {
   it('should return 401 if not authenticated', async () => {
     mockGetSession.mockResolvedValue(null)
 
-    const request = new NextRequest('http://localhost:3000/api/users/me')
+    const request = new MockNextRequest('http://localhost:3000/api/users/me')
     const response = await GET(request)
     const data = await response.json()
 
@@ -43,7 +44,7 @@ describe('GET /api/users/me', () => {
     })
     mockPrisma.user.findUnique.mockResolvedValue(null)
 
-    const request = new NextRequest('http://localhost:3000/api/users/me')
+    const request = new MockNextRequest('http://localhost:3000/api/users/me')
     const response = await GET(request)
     const data = await response.json()
 
@@ -87,7 +88,7 @@ describe('GET /api/users/me', () => {
     })
     mockPrisma.user.findUnique.mockResolvedValue(mockUser)
 
-    const request = new NextRequest('http://localhost:3000/api/users/me')
+    const request = new MockNextRequest('http://localhost:3000/api/users/me')
     const response = await GET(request)
     const data = await response.json()
 

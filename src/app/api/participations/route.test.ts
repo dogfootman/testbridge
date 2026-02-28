@@ -1,5 +1,5 @@
 /**
- * @jest-environment @edge-runtime/jest-environment
+ * @jest-environment node
  */
 
 /**
@@ -10,6 +10,7 @@
 
 import { NextRequest } from 'next/server'
 import { GET } from './route'
+import { MockNextRequest } from '@/tests/utils/mockRequest'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
@@ -35,7 +36,7 @@ describe('GET /api/participations', () => {
   it('should return 401 if not authenticated', async () => {
     mockGetSession.mockResolvedValue(null)
 
-    const request = new NextRequest('http://localhost:3000/api/participations')
+    const request = new MockNextRequest('http://localhost:3000/api/participations')
     const response = await GET(request)
     const data = await response.json()
 
@@ -118,7 +119,7 @@ describe('GET /api/participations', () => {
     mockPrisma.participation.findMany.mockResolvedValue(mockParticipations)
     mockPrisma.participation.count.mockResolvedValue(2)
 
-    const request = new NextRequest('http://localhost:3000/api/participations?page=1&limit=10')
+    const request = new MockNextRequest('http://localhost:3000/api/participations?page=1&limit=10')
     const response = await GET(request)
     const data = await response.json()
 
@@ -173,7 +174,7 @@ describe('GET /api/participations', () => {
     mockPrisma.participation.findMany.mockResolvedValue(mockParticipations)
     mockPrisma.participation.count.mockResolvedValue(1)
 
-    const request = new NextRequest('http://localhost:3000/api/participations?userId=1')
+    const request = new MockNextRequest('http://localhost:3000/api/participations?userId=1')
     const response = await GET(request)
     const data = await response.json()
 
@@ -225,7 +226,7 @@ describe('GET /api/participations', () => {
     mockPrisma.participation.findMany.mockResolvedValue(mockParticipations)
     mockPrisma.participation.count.mockResolvedValue(1)
 
-    const request = new NextRequest('http://localhost:3000/api/participations?appId=1')
+    const request = new MockNextRequest('http://localhost:3000/api/participations?appId=1')
     const response = await GET(request)
     const data = await response.json()
 
@@ -277,7 +278,7 @@ describe('GET /api/participations', () => {
     mockPrisma.participation.findMany.mockResolvedValue(mockParticipations)
     mockPrisma.participation.count.mockResolvedValue(1)
 
-    const request = new NextRequest('http://localhost:3000/api/participations?status=ACTIVE')
+    const request = new MockNextRequest('http://localhost:3000/api/participations?status=ACTIVE')
     const response = await GET(request)
     const data = await response.json()
 
@@ -294,7 +295,7 @@ describe('GET /api/participations', () => {
     mockPrisma.participation.findMany.mockResolvedValue([])
     mockPrisma.participation.count.mockResolvedValue(0)
 
-    const request = new NextRequest('http://localhost:3000/api/participations')
+    const request = new MockNextRequest('http://localhost:3000/api/participations')
     const response = await GET(request)
     const data = await response.json()
 
@@ -311,7 +312,7 @@ describe('GET /api/participations', () => {
     mockPrisma.participation.findMany.mockResolvedValue([])
     mockPrisma.participation.count.mockResolvedValue(25)
 
-    const request = new NextRequest('http://localhost:3000/api/participations?page=2&limit=10')
+    const request = new MockNextRequest('http://localhost:3000/api/participations?page=2&limit=10')
     const response = await GET(request)
     const data = await response.json()
 
@@ -335,7 +336,7 @@ describe('GET /api/participations', () => {
     mockPrisma.participation.findMany.mockResolvedValue([])
     mockPrisma.participation.count.mockResolvedValue(0)
 
-    const request = new NextRequest('http://localhost:3000/api/participations?limit=200')
+    const request = new MockNextRequest('http://localhost:3000/api/participations?limit=200')
     const response = await GET(request)
     const data = await response.json()
 

@@ -12,6 +12,7 @@ const customJestConfig = {
   testTimeout: 10000, // Increase timeout from 5000ms to 10000ms
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^uuid$': require.resolve('uuid'),
   },
   testMatch: [
     '**/__tests__/**/*.test.[jt]s?(x)',

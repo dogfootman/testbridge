@@ -1,5 +1,5 @@
 /**
- * @jest-environment @edge-runtime/jest-environment
+ * @jest-environment node
  */
 
 /**
@@ -10,6 +10,7 @@
 
 import { NextRequest } from 'next/server'
 import { GET, PATCH } from './route'
+import { MockNextRequest } from '@/tests/utils/mockRequest'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
@@ -35,7 +36,7 @@ describe('GET /api/participations/[id]', () => {
   it('should return 401 if not authenticated', async () => {
     mockGetSession.mockResolvedValue(null)
 
-    const request = new NextRequest('http://localhost:3000/api/participations/1')
+    const request = new MockNextRequest('http://localhost:3000/api/participations/1')
     const response = await GET(request, { params: { id: '1' } })
     const data = await response.json()
 
@@ -49,7 +50,7 @@ describe('GET /api/participations/[id]', () => {
       expires: '2024-12-31',
     })
 
-    const request = new NextRequest('http://localhost:3000/api/participations/invalid')
+    const request = new MockNextRequest('http://localhost:3000/api/participations/invalid')
     const response = await GET(request, { params: { id: 'invalid' } })
     const data = await response.json()
 
@@ -64,7 +65,7 @@ describe('GET /api/participations/[id]', () => {
     })
     mockPrisma.participation.findUnique.mockResolvedValue(null)
 
-    const request = new NextRequest('http://localhost:3000/api/participations/999')
+    const request = new MockNextRequest('http://localhost:3000/api/participations/999')
     const response = await GET(request, { params: { id: '999' } })
     const data = await response.json()
 
@@ -118,7 +119,7 @@ describe('GET /api/participations/[id]', () => {
     })
     mockPrisma.participation.findUnique.mockResolvedValue(mockParticipation)
 
-    const request = new NextRequest('http://localhost:3000/api/participations/1')
+    const request = new MockNextRequest('http://localhost:3000/api/participations/1')
     const response = await GET(request, { params: { id: '1' } })
     const data = await response.json()
 
@@ -139,7 +140,7 @@ describe('PATCH /api/participations/[id]', () => {
   it('should return 401 if not authenticated', async () => {
     mockGetSession.mockResolvedValue(null)
 
-    const request = new NextRequest('http://localhost:3000/api/participations/1', {
+    const request = new MockNextRequest('http://localhost:3000/api/participations/1', {
       method: 'PATCH',
       body: JSON.stringify({ status: 'COMPLETED' }),
     })
@@ -156,7 +157,7 @@ describe('PATCH /api/participations/[id]', () => {
       expires: '2024-12-31',
     })
 
-    const request = new NextRequest('http://localhost:3000/api/participations/invalid', {
+    const request = new MockNextRequest('http://localhost:3000/api/participations/invalid', {
       method: 'PATCH',
       body: JSON.stringify({ status: 'COMPLETED' }),
     })
@@ -174,7 +175,7 @@ describe('PATCH /api/participations/[id]', () => {
     })
     mockPrisma.participation.findUnique.mockResolvedValue(null)
 
-    const request = new NextRequest('http://localhost:3000/api/participations/999', {
+    const request = new MockNextRequest('http://localhost:3000/api/participations/999', {
       method: 'PATCH',
       body: JSON.stringify({ status: 'COMPLETED' }),
     })
@@ -207,7 +208,7 @@ describe('PATCH /api/participations/[id]', () => {
       updatedAt: new Date(),
     })
 
-    const request = new NextRequest('http://localhost:3000/api/participations/1', {
+    const request = new MockNextRequest('http://localhost:3000/api/participations/1', {
       method: 'PATCH',
       body: JSON.stringify({ status: 'INVALID_STATUS' }),
     })
@@ -258,7 +259,7 @@ describe('PATCH /api/participations/[id]', () => {
     })
     mockPrisma.participation.update.mockResolvedValue(updatedParticipation)
 
-    const request = new NextRequest('http://localhost:3000/api/participations/1', {
+    const request = new MockNextRequest('http://localhost:3000/api/participations/1', {
       method: 'PATCH',
       body: JSON.stringify({
         status: 'COMPLETED',
@@ -314,7 +315,7 @@ describe('PATCH /api/participations/[id]', () => {
     })
     mockPrisma.participation.update.mockResolvedValue(updatedParticipation)
 
-    const request = new NextRequest('http://localhost:3000/api/participations/1', {
+    const request = new MockNextRequest('http://localhost:3000/api/participations/1', {
       method: 'PATCH',
       body: JSON.stringify({
         status: 'DROPPED',
@@ -352,7 +353,7 @@ describe('PATCH /api/participations/[id]', () => {
       updatedAt: new Date('2024-01-10'),
     })
 
-    const request = new NextRequest('http://localhost:3000/api/participations/1', {
+    const request = new MockNextRequest('http://localhost:3000/api/participations/1', {
       method: 'PATCH',
       body: JSON.stringify({ status: 'ACTIVE' }),
     })
@@ -404,7 +405,7 @@ describe('PATCH /api/participations/[id]', () => {
     })
     mockPrisma.participation.update.mockResolvedValue(updatedParticipation)
 
-    const request = new NextRequest('http://localhost:3000/api/participations/1', {
+    const request = new MockNextRequest('http://localhost:3000/api/participations/1', {
       method: 'PATCH',
       body: JSON.stringify({ lastAppRunAt: now.toISOString() }),
     })
@@ -455,7 +456,7 @@ describe('PATCH /api/participations/[id]', () => {
     })
     mockPrisma.participation.update.mockResolvedValue(updatedParticipation)
 
-    const request = new NextRequest('http://localhost:3000/api/participations/1', {
+    const request = new MockNextRequest('http://localhost:3000/api/participations/1', {
       method: 'PATCH',
       body: JSON.stringify({ rewardStatus: 'PAID' }),
     })
@@ -488,7 +489,7 @@ describe('PATCH /api/participations/[id]', () => {
       updatedAt: new Date('2024-01-01'),
     })
 
-    const request = new NextRequest('http://localhost:3000/api/participations/1', {
+    const request = new MockNextRequest('http://localhost:3000/api/participations/1', {
       method: 'PATCH',
       body: JSON.stringify({ status: 'DROPPED' }),
     })

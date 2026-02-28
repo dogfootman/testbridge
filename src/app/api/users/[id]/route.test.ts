@@ -1,9 +1,10 @@
 /**
- * @jest-environment @edge-runtime/jest-environment
+ * @jest-environment node
  */
 
 import { NextRequest } from 'next/server'
 import { GET, PATCH } from './route'
+import { MockNextRequest } from '@/tests/utils/mockRequest'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
@@ -29,7 +30,7 @@ describe('GET /api/users/[id]', () => {
   it('should return 401 if not authenticated', async () => {
     mockGetSession.mockResolvedValue(null)
 
-    const request = new NextRequest('http://localhost:3000/api/users/1')
+    const request = new MockNextRequest('http://localhost:3000/api/users/1')
     const response = await GET(request, { params: { id: '1' } })
     const data = await response.json()
 
@@ -44,7 +45,7 @@ describe('GET /api/users/[id]', () => {
     })
     mockPrisma.user.findUnique.mockResolvedValue(null)
 
-    const request = new NextRequest('http://localhost:3000/api/users/999')
+    const request = new MockNextRequest('http://localhost:3000/api/users/999')
     const response = await GET(request, { params: { id: '999' } })
     const data = await response.json()
 
@@ -88,7 +89,7 @@ describe('GET /api/users/[id]', () => {
     })
     mockPrisma.user.findUnique.mockResolvedValue(mockUser)
 
-    const request = new NextRequest('http://localhost:3000/api/users/1')
+    const request = new MockNextRequest('http://localhost:3000/api/users/1')
     const response = await GET(request, { params: { id: '1' } })
     const data = await response.json()
 
@@ -104,7 +105,7 @@ describe('GET /api/users/[id]', () => {
       expires: '2024-12-31',
     })
 
-    const request = new NextRequest('http://localhost:3000/api/users/invalid')
+    const request = new MockNextRequest('http://localhost:3000/api/users/invalid')
     const response = await GET(request, { params: { id: 'invalid' } })
     const data = await response.json()
 
@@ -121,7 +122,7 @@ describe('PATCH /api/users/[id]', () => {
   it('should return 401 if not authenticated', async () => {
     mockGetSession.mockResolvedValue(null)
 
-    const request = new NextRequest('http://localhost:3000/api/users/1', {
+    const request = new MockNextRequest('http://localhost:3000/api/users/1', {
       method: 'PATCH',
       body: JSON.stringify({ name: 'Updated Name' }),
     })
@@ -138,7 +139,7 @@ describe('PATCH /api/users/[id]', () => {
       expires: '2024-12-31',
     })
 
-    const request = new NextRequest('http://localhost:3000/api/users/2', {
+    const request = new MockNextRequest('http://localhost:3000/api/users/2', {
       method: 'PATCH',
       body: JSON.stringify({ name: 'Updated Name' }),
     })
@@ -155,7 +156,7 @@ describe('PATCH /api/users/[id]', () => {
       expires: '2024-12-31',
     })
 
-    const request = new NextRequest('http://localhost:3000/api/users/1', {
+    const request = new MockNextRequest('http://localhost:3000/api/users/1', {
       method: 'PATCH',
       body: JSON.stringify({ nickname: 'a' }), // Too short
     })
@@ -202,7 +203,7 @@ describe('PATCH /api/users/[id]', () => {
     })
     mockPrisma.user.update.mockResolvedValue(updatedUser)
 
-    const request = new NextRequest('http://localhost:3000/api/users/1', {
+    const request = new MockNextRequest('http://localhost:3000/api/users/1', {
       method: 'PATCH',
       body: JSON.stringify({ name: 'Updated Name', bio: 'Updated bio' }),
     })

@@ -1,14 +1,14 @@
 /**
- * @jest-environment @edge-runtime/jest-environment
+ * @jest-environment node
  */
 
 // @TASK P3-R4 - Apps Resource API Tests
 // @SPEC TDD RED Phase: POST /api/apps, GET /api/apps
 
-import { NextRequest } from 'next/server'
 import { GET, POST } from './route'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { MockNextRequest } from '@/tests/utils/mockRequest'
 
 // Mock dependencies
 jest.mock('@/lib/auth')
@@ -36,7 +36,7 @@ describe('POST /api/apps', () => {
   it('should return 401 if not authenticated', async () => {
     mockGetSession.mockResolvedValue(null)
 
-    const request = new NextRequest('http://localhost:3000/api/apps', {
+    const request = new MockNextRequest('http://localhost:3000/api/apps', {
       method: 'POST',
       body: JSON.stringify({
         appName: 'Test App',
@@ -61,7 +61,7 @@ describe('POST /api/apps', () => {
       expires: '2024-12-31',
     })
 
-    const request = new NextRequest('http://localhost:3000/api/apps', {
+    const request = new MockNextRequest('http://localhost:3000/api/apps', {
       method: 'POST',
       body: JSON.stringify({
         appName: 'Test App',
@@ -86,7 +86,7 @@ describe('POST /api/apps', () => {
       expires: '2024-12-31',
     })
 
-    const request = new NextRequest('http://localhost:3000/api/apps', {
+    const request = new MockNextRequest('http://localhost:3000/api/apps', {
       method: 'POST',
       body: JSON.stringify({
         appName: '', // Empty name
@@ -108,7 +108,7 @@ describe('POST /api/apps', () => {
     })
     mockPrisma.category.findUnique.mockResolvedValue(null)
 
-    const request = new NextRequest('http://localhost:3000/api/apps', {
+    const request = new MockNextRequest('http://localhost:3000/api/apps', {
       method: 'POST',
       body: JSON.stringify({
         appName: 'Test App',
@@ -146,7 +146,7 @@ describe('POST /api/apps', () => {
       meta: { target: ['packageName'] },
     })
 
-    const request = new NextRequest('http://localhost:3000/api/apps', {
+    const request = new MockNextRequest('http://localhost:3000/api/apps', {
       method: 'POST',
       body: JSON.stringify({
         appName: 'Test App',
@@ -208,7 +208,7 @@ describe('POST /api/apps', () => {
     })
     mockPrisma.app.create.mockResolvedValue(mockApp)
 
-    const request = new NextRequest('http://localhost:3000/api/apps', {
+    const request = new MockNextRequest('http://localhost:3000/api/apps', {
       method: 'POST',
       body: JSON.stringify({
         appName: 'Test App',
@@ -299,7 +299,7 @@ describe('GET /api/apps', () => {
     mockPrisma.app.findMany.mockResolvedValue(mockApps)
     mockPrisma.app.count.mockResolvedValue(2)
 
-    const request = new NextRequest('http://localhost:3000/api/apps?page=1&limit=10')
+    const request = new MockNextRequest('http://localhost:3000/api/apps?page=1&limit=10')
     const response = await GET(request)
     const data = await response.json()
 
@@ -347,7 +347,7 @@ describe('GET /api/apps', () => {
     mockPrisma.app.findMany.mockResolvedValue(mockApps)
     mockPrisma.app.count.mockResolvedValue(1)
 
-    const request = new NextRequest('http://localhost:3000/api/apps?status=RECRUITING')
+    const request = new MockNextRequest('http://localhost:3000/api/apps?status=RECRUITING')
     const response = await GET(request)
     const data = await response.json()
 
@@ -391,7 +391,7 @@ describe('GET /api/apps', () => {
     mockPrisma.app.findMany.mockResolvedValue(mockApps)
     mockPrisma.app.count.mockResolvedValue(1)
 
-    const request = new NextRequest('http://localhost:3000/api/apps?categoryId=1')
+    const request = new MockNextRequest('http://localhost:3000/api/apps?categoryId=1')
     const response = await GET(request)
     const data = await response.json()
 
@@ -404,7 +404,7 @@ describe('GET /api/apps', () => {
     mockPrisma.app.findMany.mockResolvedValue([])
     mockPrisma.app.count.mockResolvedValue(0)
 
-    const request = new NextRequest('http://localhost:3000/api/apps')
+    const request = new MockNextRequest('http://localhost:3000/api/apps')
     const response = await GET(request)
     const data = await response.json()
 

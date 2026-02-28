@@ -5,6 +5,14 @@ import { TextEncoder, TextDecoder } from 'util'
 global.TextEncoder = TextEncoder
 global.TextDecoder = TextDecoder
 
+// Mock uuid to avoid ESM issues
+jest.mock('uuid', () => ({
+  v4: jest.fn(() => 'mock-uuid-v4'),
+  v1: jest.fn(() => 'mock-uuid-v1'),
+  v3: jest.fn(() => 'mock-uuid-v3'),
+  v5: jest.fn(() => 'mock-uuid-v5'),
+}))
+
 // Mock window.location.reload (only in jsdom environment)
 if (typeof window !== 'undefined') {
   Object.defineProperty(window, 'location', {
