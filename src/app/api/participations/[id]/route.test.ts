@@ -1,4 +1,8 @@
 /**
+ * @jest-environment @edge-runtime/jest-environment
+ */
+
+/**
  * @jest-environment node
  */
 // @TASK P3-R6 - Participations Resource API Tests (Detail/Update)

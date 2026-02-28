@@ -1,3 +1,7 @@
+/**
+ * @jest-environment @edge-runtime/jest-environment
+ */
+
 import { NextRequest } from 'next/server'
 import { GET, resetCategoryCache } from './route'
 import { prisma } from '@/lib/prisma'

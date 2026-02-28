@@ -1,6 +1,7 @@
 /**
- * @jest-environment node
+ * @jest-environment @edge-runtime/jest-environment
  */
+
 // @TASK P3-R4 - Apps Resource API Tests
 // @SPEC TDD RED Phase: POST /api/apps, GET /api/apps
 

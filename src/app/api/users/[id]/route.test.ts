@@ -1,3 +1,7 @@
+/**
+ * @jest-environment @edge-runtime/jest-environment
+ */
+
 import { NextRequest } from 'next/server'
 import { GET, PATCH } from './route'
 import { getSession } from '@/lib/auth'

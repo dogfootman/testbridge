@@ -1,4 +1,8 @@
 /**
+ * @jest-environment @edge-runtime/jest-environment
+ */
+
+/**
  * @jest-environment node
  */
 import { NextRequest } from 'next/server'

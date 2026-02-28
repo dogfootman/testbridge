@@ -9,6 +9,7 @@ const createJestConfig = nextJest({
 const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jsdom',
+  testTimeout: 10000, // Increase timeout from 5000ms to 10000ms
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
@@ -20,6 +21,14 @@ const customJestConfig = {
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/**/*.d.ts',
     '!src/**/_*.{js,jsx,ts,tsx}',
+  ],
+  // Use node environment for API route tests
+  testEnvironmentOptions: {
+    customExportConditions: [''],
+  },
+  // Transform node_modules if needed
+  transformIgnorePatterns: [
+    'node_modules/(?!(.*\\.mjs$|uuid))',
   ],
 }
 

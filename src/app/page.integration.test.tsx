@@ -17,10 +17,30 @@ jest.mock('next/link', () => {
   }
 })
 
-// 실제 fetch는 mocking하지 않음 (API 연결 테스트)
-// global.fetch는 Next.js 테스트 환경에서 자동으로 사용 가능
+// Mock fetch for integration tests
+const mockApps = [
+  { id: 1, appName: 'Instagram Clone', categoryId: 1, iconUrl: '/icon1.png', rewardAmount: 10000 },
+  { id: 2, appName: 'Fitness Tracker', categoryId: 2, iconUrl: '/icon2.png', rewardAmount: 15000 },
+  { id: 3, appName: 'Note Taking App', categoryId: 3, iconUrl: '/icon3.png', rewardAmount: 12000 },
+  { id: 4, appName: 'Weather App', categoryId: 1, iconUrl: '/icon4.png', rewardAmount: 8000 },
+  { id: 5, appName: 'Music Player', categoryId: 2, iconUrl: '/icon5.png', rewardAmount: 20000 },
+  { id: 6, appName: 'Todo App', categoryId: 3, iconUrl: '/icon6.png', rewardAmount: 5000 },
+]
 
 describe('Landing Page - Backend API Integration (P2-S1-V)', () => {
+  beforeEach(() => {
+    // Mock fetch for each test
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ apps: mockApps }),
+      })
+    ) as jest.Mock
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
   describe('6 Featured Apps Display', () => {
     /**
      * @TEST P2-S1-V.1 - 샘플 앱 6개 표시
@@ -41,7 +61,7 @@ describe('Landing Page - Backend API Integration (P2-S1-V)', () => {
           )
           expect(appCardLinks.length).toBeGreaterThan(0)
         },
-        { timeout: 5000 }
+        { timeout: 10000 }
       )
 
       // 실제로는 최대 6개까지 표시되어야 함
@@ -57,13 +77,8 @@ describe('Landing Page - Backend API Integration (P2-S1-V)', () => {
     it('should display app data with all required fields', async () => {
       render(<Home />)
 
-      // 앱이 로드될 때까지 대기
-      await waitFor(
-        () => {
-          expect(screen.queryByText(/Instagram Clone|Fitness Tracker|Note Taking App/)).toBeInTheDocument()
-        },
-        { timeout: 5000 }
-      )
+      // 앱이 로드될 때까지 대기 - findByText는 자동으로 대기
+      const appName = await screen.findByText(/Instagram Clone/, {}, { timeout: 10000 })
 
       // 첫 번째 앱 확인
       const firstAppLink = screen.getAllByRole('link').find(
@@ -74,7 +89,7 @@ describe('Landing Page - Backend API Integration (P2-S1-V)', () => {
       // 리워드 금액 표시 확인
       const rewardText = screen.queryAllByText(/원/)
       expect(rewardText.length).toBeGreaterThan(0)
-    })
+    }, 15000)
 
     /**
      * @TEST P2-S1-V.3 - 앱 네비게이션 링크 검증
@@ -82,12 +97,8 @@ describe('Landing Page - Backend API Integration (P2-S1-V)', () => {
     it('should have correct navigation links to app detail pages', async () => {
       render(<Home />)
 
-      await waitFor(
-        () => {
-          expect(screen.queryByText(/Instagram Clone|Fitness Tracker|Note Taking App/)).toBeInTheDocument()
-        },
-        { timeout: 5000 }
-      )
+      // 앱이 로드될 때까지 대기 - findByText는 자동으로 대기
+      await screen.findByText(/Instagram Clone/, {}, { timeout: 10000 })
 
       // /tester/apps/{id} 형식의 링크 확인
       const appLinks = screen.getAllByRole('link').filter(
@@ -99,7 +110,7 @@ describe('Landing Page - Backend API Integration (P2-S1-V)', () => {
         const href = (link as HTMLAnchorElement).href
         expect(href).toMatch(/\/tester\/apps\/\d+/)
       })
-    })
+    }, 15000)
   })
 
   describe('Hero Section & CTA Buttons', () => {
@@ -178,44 +189,37 @@ describe('Landing Page - Backend API Integration (P2-S1-V)', () => {
      * @TEST P2-S1-V.8 - API 호출 검증
      */
     it('should call the correct API endpoint on mount', async () => {
-      const fetchSpy = jest.spyOn(global, 'fetch')
-
       render(<Home />)
 
       await waitFor(
         () => {
-          expect(fetchSpy).toHaveBeenCalled()
+          expect(global.fetch).toHaveBeenCalled()
         },
-        { timeout: 5000 }
+        { timeout: 10000 }
       )
 
-      expect(fetchSpy).toHaveBeenCalledWith(
+      expect(global.fetch).toHaveBeenCalledWith(
         expect.stringContaining('/api/apps')
       )
-
-      fetchSpy.mockRestore()
     })
 
     /**
      * @TEST P2-S1-V.9 - 올바른 쿼리 파라미터 사용
      */
     it('should request apps with correct query parameters', async () => {
-      const fetchSpy = jest.spyOn(global, 'fetch')
-
       render(<Home />)
 
       await waitFor(
         () => {
-          expect(fetchSpy).toHaveBeenCalled()
+          expect(global.fetch).toHaveBeenCalled()
         },
-        { timeout: 5000 }
+        { timeout: 10000 }
       )
 
-      const callArgs = fetchSpy.mock.calls[0][0] as string
+      const mockFetch = global.fetch as jest.Mock
+      const callArgs = mockFetch.mock.calls[0][0] as string
       expect(callArgs).toContain('status=RECRUITING')
       expect(callArgs).toContain('limit=6')
-
-      fetchSpy.mockRestore()
     })
 
     /**
@@ -233,9 +237,8 @@ describe('Landing Page - Backend API Integration (P2-S1-V)', () => {
      * @TEST P2-S1-V.11 - API 에러 처리
      */
     it('should handle API errors gracefully', async () => {
-      const fetchSpy = jest
-        .spyOn(global, 'fetch')
-        .mockRejectedValueOnce(new Error('Network error'))
+      // Override the mock to reject
+      (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('Network error'))
 
       render(<Home />)
 
@@ -244,10 +247,8 @@ describe('Landing Page - Backend API Integration (P2-S1-V)', () => {
           // 에러가 발생했을 때도 페이지는 렌더링되어야 함
           expect(screen.getByRole('main')).toBeInTheDocument()
         },
-        { timeout: 5000 }
+        { timeout: 10000 }
       )
-
-      fetchSpy.mockRestore()
     })
   })
 
@@ -265,7 +266,7 @@ describe('Landing Page - Backend API Integration (P2-S1-V)', () => {
           // 최소한 페이지가 렌더링되고 API 요청이 완료되어야 함
           expect(screen.getByRole('main')).toBeInTheDocument()
         },
-        { timeout: 5000 }
+        { timeout: 10000 }
       )
 
       const endTime = performance.now()

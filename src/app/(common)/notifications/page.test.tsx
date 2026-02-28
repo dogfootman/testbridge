@@ -47,19 +47,19 @@ describe('NotificationsPage - TDD RED Phase', () => {
 
   describe('알림 목록 렌더링 검증', () => {
     it('should render notifications page title', async () => {
-      render(await NotificationsPage())
+      render(await NotificationsPage({ searchParams: {} }))
       expect(screen.getByText(/알림 센터/)).toBeInTheDocument()
     })
 
     it('should render notification tabs', async () => {
-      render(await NotificationsPage())
+      render(await NotificationsPage({ searchParams: {} }))
       expect(screen.getByText('전체')).toBeInTheDocument()
       expect(screen.getByText('읽지않음')).toBeInTheDocument()
       expect(screen.getByText('읽음')).toBeInTheDocument()
     })
 
     it('should render notification list', async () => {
-      render(await NotificationsPage())
+      render(await NotificationsPage({ searchParams: {} }))
       await waitFor(() => {
         expect(screen.getByText('테스트 지원 승인')).toBeInTheDocument()
         expect(screen.getByText('앱 테스트 지원이 승인되었습니다.')).toBeInTheDocument()
@@ -67,7 +67,7 @@ describe('NotificationsPage - TDD RED Phase', () => {
     })
 
     it('should render mark all read button', async () => {
-      render(await NotificationsPage())
+      render(await NotificationsPage({ searchParams: {} }))
       expect(screen.getByText(/전체 읽음/)).toBeInTheDocument()
     })
 
@@ -77,7 +77,7 @@ describe('NotificationsPage - TDD RED Phase', () => {
         json: async () => ({ notifications: [], total: 0 }),
       })
 
-      render(await NotificationsPage())
+      render(await NotificationsPage({ searchParams: {} }))
       await waitFor(() => {
         expect(screen.getByText(/새로운 알림이 없습니다/)).toBeInTheDocument()
       })
@@ -86,7 +86,7 @@ describe('NotificationsPage - TDD RED Phase', () => {
 
   describe('읽음 처리 기능 검증', () => {
     it('should highlight unread notifications', async () => {
-      render(await NotificationsPage())
+      render(await NotificationsPage({ searchParams: {} }))
       await waitFor(() => {
         const unreadNotif = screen.getByText('테스트 지원 승인').closest('div')
         expect(unreadNotif).toHaveClass('font-bold')
@@ -94,7 +94,7 @@ describe('NotificationsPage - TDD RED Phase', () => {
     })
 
     it('should mark notification as read when clicked', async () => {
-      render(await NotificationsPage())
+      render(await NotificationsPage({ searchParams: {} }))
 
       await waitFor(() => {
         const notification = screen.getByText('테스트 지원 승인')
@@ -111,7 +111,7 @@ describe('NotificationsPage - TDD RED Phase', () => {
     })
 
     it('should mark all notifications as read', async () => {
-      render(await NotificationsPage())
+      render(await NotificationsPage({ searchParams: {} }))
 
       await waitFor(() => {
         const markAllReadBtn = screen.getByText(/전체 읽음/)
@@ -129,7 +129,7 @@ describe('NotificationsPage - TDD RED Phase', () => {
 
   describe('타입별 라우팅 검증', () => {
     it('should navigate to participation page on APPLICATION_APPROVED click', async () => {
-      render(await NotificationsPage())
+      render(await NotificationsPage({ searchParams: {} }))
 
       await waitFor(() => {
         const notification = screen.getByText('테스트 지원 승인')
@@ -141,7 +141,7 @@ describe('NotificationsPage - TDD RED Phase', () => {
     })
 
     it('should navigate to feedback page on FEEDBACK_SUBMITTED click', async () => {
-      render(await NotificationsPage())
+      render(await NotificationsPage({ searchParams: {} }))
 
       await waitFor(() => {
         const notification = screen.getByText('피드백 제출 완료')
@@ -155,7 +155,7 @@ describe('NotificationsPage - TDD RED Phase', () => {
 
   describe('필터링 기능 검증', () => {
     it('should filter unread notifications when "읽지않음" tab clicked', async () => {
-      render(await NotificationsPage())
+      render(await NotificationsPage({ searchParams: {} }))
 
       await waitFor(() => {
         const unreadTab = screen.getByText('읽지않음')
@@ -169,7 +169,7 @@ describe('NotificationsPage - TDD RED Phase', () => {
     })
 
     it('should filter read notifications when "읽음" tab clicked', async () => {
-      render(await NotificationsPage())
+      render(await NotificationsPage({ searchParams: {} }))
 
       await waitFor(() => {
         const readTab = screen.getByText('읽음')
@@ -183,7 +183,7 @@ describe('NotificationsPage - TDD RED Phase', () => {
     })
 
     it('should show all notifications when "전체" tab clicked', async () => {
-      render(await NotificationsPage())
+      render(await NotificationsPage({ searchParams: {} }))
 
       await waitFor(() => {
         const allTab = screen.getByText('전체')
@@ -199,13 +199,13 @@ describe('NotificationsPage - TDD RED Phase', () => {
 
   describe('접근성 검증', () => {
     it('should have proper ARIA labels', async () => {
-      render(await NotificationsPage())
+      render(await NotificationsPage({ searchParams: {} }))
       expect(screen.getByRole('main')).toBeInTheDocument()
       expect(screen.getByRole('tablist')).toBeInTheDocument()
     })
 
     it('should have semantic HTML structure', async () => {
-      render(await NotificationsPage())
+      render(await NotificationsPage({ searchParams: {} }))
       const main = screen.getByRole('main')
       expect(main).toContainElement(screen.getByText(/알림 센터/))
     })

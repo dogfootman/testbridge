@@ -1,4 +1,8 @@
 /**
+ * @jest-environment @edge-runtime/jest-environment
+ */
+
+/**
  * @jest-environment node
  */
 // @TASK P3-R4 - Apps Resource API Tests (Detail/Update/Delete)
