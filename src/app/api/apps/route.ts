@@ -140,7 +140,7 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status')
     const limit = searchParams.get('limit')
 
-    const where: any = {}
+    const where: { status?: string } = {}
     if (status) {
       where.status = status
     }

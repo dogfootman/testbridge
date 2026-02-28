@@ -16,14 +16,6 @@ let categoryCache: CategoryCache | null = null
 const CACHE_TTL = 5 * 60 * 1000 // 5 minutes in milliseconds
 
 /**
- * Reset the cache (mainly for testing purposes)
- * Note: Not exported as it's not a valid Next.js Route export
- */
-function resetCategoryCache() {
-  categoryCache = null
-}
-
-/**
  * Check if cache is still valid
  */
 function isCacheValid(): boolean {
@@ -38,7 +30,7 @@ function isCacheValid(): boolean {
  * Public endpoint - no authentication required
  * Cached for 5 minutes
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     // Return cached data if still valid
     if (isCacheValid() && categoryCache) {

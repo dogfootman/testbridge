@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const appIdParam = searchParams.get('appId')
 
-    const where: any = {}
+    const where: { appId?: number } = {}
     if (appIdParam) {
       where.appId = parseInt(appIdParam)
     }

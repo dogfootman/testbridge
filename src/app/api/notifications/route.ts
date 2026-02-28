@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
     const { page, limit, isRead } = validatedQuery
 
     // Build where clause
-    const where: any = { userId }
+    const where: { userId: number; isRead?: boolean } = { userId }
     if (isRead !== undefined) {
       where.isRead = isRead
     }

@@ -128,7 +128,7 @@ export async function GET(request: NextRequest) {
     const appIdParam = searchParams.get('appId')
 
     // Build where clause
-    const where: any = { testerId }
+    const where: { testerId: number; appId?: number } = { testerId }
     if (appIdParam) {
       where.appId = parseInt(appIdParam)
     }

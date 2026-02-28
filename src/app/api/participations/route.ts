@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     const appIdParam = searchParams.get('appId')
     const statusParam = searchParams.get('status')
 
-    const where: any = {
+    const where: { testerId: number; appId?: number; status?: string } = {
       testerId: userId,
     }
     if (appIdParam) {

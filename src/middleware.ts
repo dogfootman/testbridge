@@ -26,7 +26,7 @@ export default withAuth(
   },
   {
     callbacks: {
-      authorized: ({ token }) => {
+      authorized: ({ token: _token }) => {
         // 모든 요청 허용 (인증 여부는 페이지에서 처리)
         return true
       },

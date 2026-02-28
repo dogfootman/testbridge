@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, user }) {
       if (session.user) {
         session.user.id = user.id
-        // @ts-ignore
+        // @ts-expect-error - role is not in default session type
         session.user.role = user.role
       }
       return session
