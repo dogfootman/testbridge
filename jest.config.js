@@ -21,6 +21,9 @@ const customJestConfig = {
     '!src/**/*.d.ts',
     '!src/**/_*.{js,jsx,ts,tsx}',
   ],
+  transformIgnorePatterns: [
+    'node_modules/(?!(next-auth|@next-auth|openid-client|jose|uuid|@panva)/)',
+  ],
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
