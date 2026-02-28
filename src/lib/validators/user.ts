@@ -6,6 +6,8 @@ export const updateUserSchema = z.object({
   nickname: z.string().min(2).max(20).optional(),
   bio: z.string().max(200).optional(),
   profileImageUrl: z.string().url().max(500).optional(),
+  role: z.enum(['NONE', 'DEVELOPER', 'TESTER', 'BOTH', 'ADMIN']).optional(),
+  status: z.enum(['ACTIVE', 'SUSPENDED', 'WITHDRAWN']).optional(),
 })
 
 export type UpdateUserInput = z.infer<typeof updateUserSchema>

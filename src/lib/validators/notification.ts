@@ -2,9 +2,24 @@ import { z } from 'zod'
 
 // Query parameters for GET /api/notifications
 export const getNotificationsQuerySchema = z.object({
-  page: z.coerce.number().int().min(1).default(1),
-  limit: z.coerce.number().int().min(1).max(100).default(20),
-  isRead: z.enum(['true', 'false']).optional().transform(val => val === 'true' ? true : val === 'false' ? false : undefined),
+  page: z
+    .union([z.string(), z.number(), z.null(), z.undefined()])
+    .optional()
+    .default(1)
+    .transform((val) => (val ? parseInt(String(val), 10) : 1))
+    .pipe(z.number().int().min(1)),
+  limit: z
+    .union([z.string(), z.number(), z.null(), z.undefined()])
+    .optional()
+    .default(20)
+    .transform((val) => (val ? parseInt(String(val), 10) : 20))
+    .pipe(z.number().int().min(1).max(100)),
+  isRead: z
+    .union([z.literal('true'), z.literal('false'), z.null(), z.undefined()])
+    .optional()
+    .transform((val) =>
+      val === 'true' ? true : val === 'false' ? false : undefined
+    ),
 })
 
 export type GetNotificationsQuery = z.infer<typeof getNotificationsQuerySchema>

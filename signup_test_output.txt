@@ -1,0 +1,1681 @@
+
+> testbridge@0.1.0 test
+> jest --testPathPattern=signup --verbose
+
+watchman warning:  Recrawled this watch 9 times, most recently because:
+MustScanSubDirs UserDroppedTo resolve, please review the information on
+https://facebook.github.io/watchman/docs/troubleshooting.html#recrawl
+To clear this warning, run:
+`watchman watch-del '/Users/nobang/ai_workspace/testers' ; watchman watch-project '/Users/nobang/ai_workspace/testers'`
+
+FAIL src/app/(auth)/signup/page.test.tsx (12.559 s)
+  SignupPage - TDD RED Phase
+    OAuth 버튼 렌더링 검증
+      ✓ should render Google OAuth button (33 ms)
+      ✓ should call signIn with Google provider when Google button clicked (10 ms)
+      ✓ should render Kakao OAuth button (11 ms)
+      ✓ should render Naver OAuth button (11 ms)
+    역할 선택 UI 검증
+      ✓ should show role selection after OAuth success (new user) (7 ms)
+      ✓ should render DEVELOPER role option (14 ms)
+      ✓ should render TESTER role option (13 ms)
+      ✓ should render BOTH role option (13 ms)
+      ✓ should enable next button after role selection (18 ms)
+    프로필 입력 폼 검증
+      ✓ should show profile form after role selection (17 ms)
+      ✕ should render nickname input field (1011 ms)
+      ✕ should render profile image URL input field (1006 ms)
+      ✕ should validate nickname is required (1013 ms)
+      ✕ should show error for duplicate nickname (1013 ms)
+    약관 동의 화면 검증
+      ✕ should show agreement checkboxes after profile input (1011 ms)
+      ✕ should render terms of service checkbox (required) (1013 ms)
+      ✕ should render privacy policy checkbox (required) (1013 ms)
+      ✕ should render marketing checkbox (optional) (1014 ms)
+      ✕ should disable submit button when required agreements are not checked (1011 ms)
+      ✕ should enable submit button when all required agreements are checked (1009 ms)
+    가입 완료 및 리다이렉트
+      ✕ should redirect to /developer after successful signup with DEVELOPER role (1007 ms)
+      ✕ should redirect to /tester after successful signup with TESTER role (1053 ms)
+    기존 사용자 처리
+      ✓ should redirect existing user with role to appropriate dashboard (8 ms)
+
+  ● SignupPage - TDD RED Phase › 프로필 입력 폼 검증 › should render nickname input field
+
+    Found multiple elements with the text of: /개발자/i
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"DEVELOPER"[39m
+    [36m/>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"BOTH"[39m
+    [36m/>[39m
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-h-screen flex items-center justify-center bg-gray-50 px-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"max-w-md w-full bg-white rounded-lg shadow-md p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-center mb-4"[39m
+            [36m>[39m
+              [0m역할을 선택해주세요[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-center text-gray-600 mb-8"[39m
+            [36m>[39m
+              [0mTestBridge에서 어떤 역할로 활동하시겠어요?[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"space-y-4 mb-8"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"DEVELOPER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m개발자[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱 테스트를 요청합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"TESTER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m테스터[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱을 테스트합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"BOTH"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m둘 다[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m개발자이면서 테스터로 활동합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"[39m
+              [33mdisabled[39m=[32m""[39m
+            [36m>[39m
+              [0m다음[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+      223 |
+      224 |       // 역할 선택 후 다음
+    > 225 |       await waitFor(() => {
+          |                    ^
+      226 |         const developerRadio = screen.getByLabelText(/개발자/i)
+      227 |         fireEvent.click(developerRadio)
+      228 |       })
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at Object.<anonymous> (/Users/nobang/ai_workspace/testers/src/app/(auth)../../../../signup/page.test.tsx:225:20)
+
+  ● SignupPage - TDD RED Phase › 프로필 입력 폼 검증 › should render profile image URL input field
+
+    Found multiple elements with the text of: /개발자/i
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"DEVELOPER"[39m
+    [36m/>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"BOTH"[39m
+    [36m/>[39m
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-h-screen flex items-center justify-center bg-gray-50 px-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"max-w-md w-full bg-white rounded-lg shadow-md p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-center mb-4"[39m
+            [36m>[39m
+              [0m역할을 선택해주세요[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-center text-gray-600 mb-8"[39m
+            [36m>[39m
+              [0mTestBridge에서 어떤 역할로 활동하시겠어요?[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"space-y-4 mb-8"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"DEVELOPER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m개발자[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱 테스트를 요청합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"TESTER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m테스터[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱을 테스트합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"BOTH"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m둘 다[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m개발자이면서 테스터로 활동합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"[39m
+              [33mdisabled[39m=[32m""[39m
+            [36m>[39m
+              [0m다음[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+      253 |
+      254 |       // 역할 선택 후 다음
+    > 255 |       await waitFor(() => {
+          |                    ^
+      256 |         const developerRadio = screen.getByLabelText(/개발자/i)
+      257 |         fireEvent.click(developerRadio)
+      258 |       })
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at Object.<anonymous> (/Users/nobang/ai_workspace/testers/src/app/(auth)../../../../signup/page.test.tsx:255:20)
+
+  ● SignupPage - TDD RED Phase › 프로필 입력 폼 검증 › should validate nickname is required
+
+    Found multiple elements with the text of: /개발자/i
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"DEVELOPER"[39m
+    [36m/>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"BOTH"[39m
+    [36m/>[39m
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-h-screen flex items-center justify-center bg-gray-50 px-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"max-w-md w-full bg-white rounded-lg shadow-md p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-center mb-4"[39m
+            [36m>[39m
+              [0m역할을 선택해주세요[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-center text-gray-600 mb-8"[39m
+            [36m>[39m
+              [0mTestBridge에서 어떤 역할로 활동하시겠어요?[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"space-y-4 mb-8"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"DEVELOPER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m개발자[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱 테스트를 요청합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"TESTER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m테스터[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱을 테스트합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"BOTH"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m둘 다[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m개발자이면서 테스터로 활동합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"[39m
+              [33mdisabled[39m=[32m""[39m
+            [36m>[39m
+              [0m다음[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+      282 |
+      283 |       // 역할 선택 후 다음
+    > 284 |       await waitFor(() => {
+          |                    ^
+      285 |         const developerRadio = screen.getByLabelText(/개발자/i)
+      286 |         fireEvent.click(developerRadio)
+      287 |       })
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at Object.<anonymous> (/Users/nobang/ai_workspace/testers/src/app/(auth)../../../../signup/page.test.tsx:284:20)
+
+  ● SignupPage - TDD RED Phase › 프로필 입력 폼 검증 › should show error for duplicate nickname
+
+    Found multiple elements with the text of: /개발자/i
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"DEVELOPER"[39m
+    [36m/>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"BOTH"[39m
+    [36m/>[39m
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-h-screen flex items-center justify-center bg-gray-50 px-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"max-w-md w-full bg-white rounded-lg shadow-md p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-center mb-4"[39m
+            [36m>[39m
+              [0m역할을 선택해주세요[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-center text-gray-600 mb-8"[39m
+            [36m>[39m
+              [0mTestBridge에서 어떤 역할로 활동하시겠어요?[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"space-y-4 mb-8"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"DEVELOPER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m개발자[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱 테스트를 요청합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"TESTER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m테스터[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱을 테스트합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"BOTH"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m둘 다[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m개발자이면서 테스터로 활동합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"[39m
+              [33mdisabled[39m=[32m""[39m
+            [36m>[39m
+              [0m다음[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+      323 |
+      324 |       // 역할 선택 후 다음
+    > 325 |       await waitFor(() => {
+          |                    ^
+      326 |         const developerRadio = screen.getByLabelText(/개발자/i)
+      327 |         fireEvent.click(developerRadio)
+      328 |       })
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at Object.<anonymous> (/Users/nobang/ai_workspace/testers/src/app/(auth)../../../../signup/page.test.tsx:325:20)
+
+  ● SignupPage - TDD RED Phase › 약관 동의 화면 검증 › should show agreement checkboxes after profile input
+
+    Found multiple elements with the text of: /개발자/i
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"DEVELOPER"[39m
+    [36m/>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"BOTH"[39m
+    [36m/>[39m
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-h-screen flex items-center justify-center bg-gray-50 px-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"max-w-md w-full bg-white rounded-lg shadow-md p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-center mb-4"[39m
+            [36m>[39m
+              [0m역할을 선택해주세요[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-center text-gray-600 mb-8"[39m
+            [36m>[39m
+              [0mTestBridge에서 어떤 역할로 활동하시겠어요?[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"space-y-4 mb-8"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"DEVELOPER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m개발자[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱 테스트를 요청합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"TESTER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m테스터[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱을 테스트합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"BOTH"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m둘 다[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m개발자이면서 테스터로 활동합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"[39m
+              [33mdisabled[39m=[32m""[39m
+            [36m>[39m
+              [0m다음[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+      367 |
+      368 |       // 역할 선택
+    > 369 |       await waitFor(() => {
+          |                    ^
+      370 |         const developerRadio = screen.getByLabelText(/개발자/i)
+      371 |         fireEvent.click(developerRadio)
+      372 |       })
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at Object.<anonymous> (/Users/nobang/ai_workspace/testers/src/app/(auth)../../../../signup/page.test.tsx:369:20)
+
+  ● SignupPage - TDD RED Phase › 약관 동의 화면 검증 › should render terms of service checkbox (required)
+
+    Found multiple elements with the text of: /개발자/i
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"DEVELOPER"[39m
+    [36m/>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"BOTH"[39m
+    [36m/>[39m
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-h-screen flex items-center justify-center bg-gray-50 px-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"max-w-md w-full bg-white rounded-lg shadow-md p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-center mb-4"[39m
+            [36m>[39m
+              [0m역할을 선택해주세요[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-center text-gray-600 mb-8"[39m
+            [36m>[39m
+              [0mTestBridge에서 어떤 역할로 활동하시겠어요?[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"space-y-4 mb-8"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"DEVELOPER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m개발자[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱 테스트를 요청합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"TESTER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m테스터[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱을 테스트합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"BOTH"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m둘 다[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m개발자이면서 테스터로 활동합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"[39m
+              [33mdisabled[39m=[32m""[39m
+            [36m>[39m
+              [0m다음[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+      410 |
+      411 |       // 역할 선택 → 프로필 입력 → 약관 동의
+    > 412 |       await waitFor(() => {
+          |                    ^
+      413 |         const developerRadio = screen.getByLabelText(/개발자/i)
+      414 |         fireEvent.click(developerRadio)
+      415 |       })
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at Object.<anonymous> (/Users/nobang/ai_workspace/testers/src/app/(auth)../../../../signup/page.test.tsx:412:20)
+
+  ● SignupPage - TDD RED Phase › 약관 동의 화면 검증 › should render privacy policy checkbox (required)
+
+    Found multiple elements with the text of: /개발자/i
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"DEVELOPER"[39m
+    [36m/>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"BOTH"[39m
+    [36m/>[39m
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-h-screen flex items-center justify-center bg-gray-50 px-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"max-w-md w-full bg-white rounded-lg shadow-md p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-center mb-4"[39m
+            [36m>[39m
+              [0m역할을 선택해주세요[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-center text-gray-600 mb-8"[39m
+            [36m>[39m
+              [0mTestBridge에서 어떤 역할로 활동하시겠어요?[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"space-y-4 mb-8"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"DEVELOPER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m개발자[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱 테스트를 요청합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"TESTER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m테스터[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱을 테스트합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"BOTH"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m둘 다[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m개발자이면서 테스터로 활동합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"[39m
+              [33mdisabled[39m=[32m""[39m
+            [36m>[39m
+              [0m다음[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+      453 |
+      454 |       // 역할 선택 → 프로필 입력 → 약관 동의
+    > 455 |       await waitFor(() => {
+          |                    ^
+      456 |         const developerRadio = screen.getByLabelText(/개발자/i)
+      457 |         fireEvent.click(developerRadio)
+      458 |       })
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at Object.<anonymous> (/Users/nobang/ai_workspace/testers/src/app/(auth)../../../../signup/page.test.tsx:455:20)
+
+  ● SignupPage - TDD RED Phase › 약관 동의 화면 검증 › should render marketing checkbox (optional)
+
+    Found multiple elements with the text of: /개발자/i
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"DEVELOPER"[39m
+    [36m/>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"BOTH"[39m
+    [36m/>[39m
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-h-screen flex items-center justify-center bg-gray-50 px-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"max-w-md w-full bg-white rounded-lg shadow-md p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-center mb-4"[39m
+            [36m>[39m
+              [0m역할을 선택해주세요[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-center text-gray-600 mb-8"[39m
+            [36m>[39m
+              [0mTestBridge에서 어떤 역할로 활동하시겠어요?[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"space-y-4 mb-8"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"DEVELOPER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m개발자[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱 테스트를 요청합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"TESTER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m테스터[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱을 테스트합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"BOTH"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m둘 다[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m개발자이면서 테스터로 활동합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"[39m
+              [33mdisabled[39m=[32m""[39m
+            [36m>[39m
+              [0m다음[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+      496 |
+      497 |       // 역할 선택 → 프로필 입력 → 약관 동의
+    > 498 |       await waitFor(() => {
+          |                    ^
+      499 |         const developerRadio = screen.getByLabelText(/개발자/i)
+      500 |         fireEvent.click(developerRadio)
+      501 |       })
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at Object.<anonymous> (/Users/nobang/ai_workspace/testers/src/app/(auth)../../../../signup/page.test.tsx:498:20)
+
+  ● SignupPage - TDD RED Phase › 약관 동의 화면 검증 › should disable submit button when required agreements are not checked
+
+    Found multiple elements with the text of: /개발자/i
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"DEVELOPER"[39m
+    [36m/>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"BOTH"[39m
+    [36m/>[39m
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-h-screen flex items-center justify-center bg-gray-50 px-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"max-w-md w-full bg-white rounded-lg shadow-md p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-center mb-4"[39m
+            [36m>[39m
+              [0m역할을 선택해주세요[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-center text-gray-600 mb-8"[39m
+            [36m>[39m
+              [0mTestBridge에서 어떤 역할로 활동하시겠어요?[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"space-y-4 mb-8"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"DEVELOPER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m개발자[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱 테스트를 요청합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"TESTER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m테스터[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱을 테스트합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"BOTH"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m둘 다[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m개발자이면서 테스터로 활동합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"[39m
+              [33mdisabled[39m=[32m""[39m
+            [36m>[39m
+              [0m다음[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+      539 |
+      540 |       // 역할 선택 → 프로필 입력 → 약관 동의
+    > 541 |       await waitFor(() => {
+          |                    ^
+      542 |         const developerRadio = screen.getByLabelText(/개발자/i)
+      543 |         fireEvent.click(developerRadio)
+      544 |       })
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at Object.<anonymous> (/Users/nobang/ai_workspace/testers/src/app/(auth)../../../../signup/page.test.tsx:541:20)
+
+  ● SignupPage - TDD RED Phase › 약관 동의 화면 검증 › should enable submit button when all required agreements are checked
+
+    Found multiple elements with the text of: /개발자/i
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"DEVELOPER"[39m
+    [36m/>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"BOTH"[39m
+    [36m/>[39m
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-h-screen flex items-center justify-center bg-gray-50 px-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"max-w-md w-full bg-white rounded-lg shadow-md p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-center mb-4"[39m
+            [36m>[39m
+              [0m역할을 선택해주세요[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-center text-gray-600 mb-8"[39m
+            [36m>[39m
+              [0mTestBridge에서 어떤 역할로 활동하시겠어요?[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"space-y-4 mb-8"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"DEVELOPER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m개발자[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱 테스트를 요청합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"TESTER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m테스터[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱을 테스트합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"BOTH"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m둘 다[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m개발자이면서 테스터로 활동합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"[39m
+              [33mdisabled[39m=[32m""[39m
+            [36m>[39m
+              [0m다음[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+      581 |
+      582 |       // 역할 선택 → 프로필 입력 → 약관 동의
+    > 583 |       await waitFor(() => {
+          |                    ^
+      584 |         const developerRadio = screen.getByLabelText(/개발자/i)
+      585 |         fireEvent.click(developerRadio)
+      586 |       })
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at Object.<anonymous> (/Users/nobang/ai_workspace/testers/src/app/(auth)../../../../signup/page.test.tsx:583:20)
+
+  ● SignupPage - TDD RED Phase › 가입 완료 및 리다이렉트 › should redirect to /developer after successful signup with DEVELOPER role
+
+    Found multiple elements with the text of: /개발자/i
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"DEVELOPER"[39m
+    [36m/>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<input[39m
+      [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+      [33mname[39m=[32m"role"[39m
+      [33mtype[39m=[32m"radio"[39m
+      [33mvalue[39m=[32m"BOTH"[39m
+    [36m/>[39m
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-h-screen flex items-center justify-center bg-gray-50 px-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"max-w-md w-full bg-white rounded-lg shadow-md p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-center mb-4"[39m
+            [36m>[39m
+              [0m역할을 선택해주세요[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-center text-gray-600 mb-8"[39m
+            [36m>[39m
+              [0mTestBridge에서 어떤 역할로 활동하시겠어요?[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"space-y-4 mb-8"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"DEVELOPER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m개발자[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱 테스트를 요청합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"TESTER"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m테스터[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m앱을 테스트합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"flex items-center p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-4 h-4 text-blue-600"[39m
+                  [33mname[39m=[32m"role"[39m
+                  [33mtype[39m=[32m"radio"[39m
+                  [33mvalue[39m=[32m"BOTH"[39m
+                [36m/>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"ml-3"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"font-semibold"[39m
+                  [36m>[39m
+                    [0m둘 다[0m
+                  [36m</div>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                  [36m>[39m
+                    [0m개발자이면서 테스터로 활동합니다[0m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</label>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"[39m
+              [33mdisabled[39m=[32m""[39m
+            [36m>[39m
+              [0m다음[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+      640 |
+      641 |       // 역할 선택 (DEVELOPER)
+    > 642 |       await waitFor(() => {
+          |                    ^
+      643 |         const developerRadio = screen.getByLabelText(/개발자/i)
+      644 |         fireEvent.click(developerRadio)
+      645 |       })
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at Object.<anonymous> (/Users/nobang/ai_workspace/testers/src/app/(auth)../../../../signup/page.test.tsx:642:20)
+
+  ● SignupPage - TDD RED Phase › 가입 완료 및 리다이렉트 › should redirect to /tester after successful signup with TESTER role
+
+    Unable to find role="checkbox" and name `/이용약관.*동의.*필수/i`
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"min-h-screen flex items-center justify-center bg-gray-50 px-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"max-w-md w-full bg-white rounded-lg shadow-md p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-center mb-4"[39m
+            [36m>[39m
+              [0m프로필 입력[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-center text-gray-600 mb-8"[39m
+            [36m>[39m
+              [0m다른 사용자에게 보여질 정보입니다[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"space-y-6 mb-8"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"block text-sm font-medium text-gray-700 mb-2"[39m
+                  [33mfor[39m=[32m"nickname"[39m
+                [36m>[39m
+                  [0m닉네임 *[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"[39m
+                  [33mid[39m=[32m"nickname"[39m
+                  [33mplaceholder[39m=[32m"사용할 닉네임을 입력하세요"[39m
+                  [33mtype[39m=[32m"text"[39m
+                  [33mvalue[39m=[32m"testuser"[39m
+                [36m/>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"text-red-500 text-sm mt-1"[39m
+                [36m>[39m
+                  [0m이미 사용 중인 닉네임입니다.[0m
+                [36m</p>[39m
+              [36m</div>[39m
+              [36m<div>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"block text-sm font-medium text-gray-700 mb-2"[39m
+                  [33mfor[39m=[32m"profileImageUrl"[39m
+                [36m>[39m
+                  [0m프로필 이미지 URL[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"[39m
+                  [33mid[39m=[32m"profileImageUrl"[39m
+                  [33mplaceholder[39m=[32m"https://example.com/image.jpg"[39m
+                  [33mtype[39m=[32m"url"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"[39m
+            [36m>[39m
+              [0m다음[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+      721 |
+      722 |       // 약관 동의
+    > 723 |       await waitFor(() => {
+          |                    ^
+      724 |         const termsCheckbox = screen.getByRole('checkbox', { name: /이용약관.*동의.*필수/i })
+      725 |         const privacyCheckbox = screen.getByRole('checkbox', { name: /개인정보.*처리방침.*동의.*필수/i })
+      726 |
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+      at Object.<anonymous> (/Users/nobang/ai_workspace/testers/src/app/(auth)../../../../signup/page.test.tsx:723:20)
+
+Test Suites: 1 failed, 1 total
+Tests:       12 failed, 11 passed, 23 total
+Snapshots:   0 total
+Time:        12.841 s, estimated 13 s
+Ran all test suites matching /signup/i.
