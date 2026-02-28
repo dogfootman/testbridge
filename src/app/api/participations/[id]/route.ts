@@ -78,18 +78,24 @@ export async function GET(
 
     // Calculate progress
     const now = new Date()
-    const startDate = new Date(participation.app.testStartDate)
-    const endDate = new Date(participation.app.testEndDate)
-    const totalDays = Math.round(
-      (endDate.getTime() - startDate.getTime()) / 86400000
-    )
-    const daysPassed = Math.max(
-      0,
-      Math.round((now.getTime() - startDate.getTime()) / 86400000)
-    )
-    const percentage = totalDays > 0
-      ? Math.min(100, Math.round((daysPassed / totalDays) * 100))
-      : 0
+    let daysPassed = 0
+    let totalDays = 0
+    let percentage = 0
+
+    if (participation.app.testStartDate && participation.app.testEndDate) {
+      const startDate = new Date(participation.app.testStartDate)
+      const endDate = new Date(participation.app.testEndDate)
+      totalDays = Math.round(
+        (endDate.getTime() - startDate.getTime()) / 86400000
+      )
+      daysPassed = Math.max(
+        0,
+        Math.round((now.getTime() - startDate.getTime()) / 86400000)
+      )
+      percentage = totalDays > 0
+        ? Math.min(100, Math.round((daysPassed / totalDays) * 100))
+        : 0
+    }
 
     const response = {
       ...participation,

@@ -17,8 +17,9 @@ const CACHE_TTL = 5 * 60 * 1000 // 5 minutes in milliseconds
 
 /**
  * Reset the cache (mainly for testing purposes)
+ * Note: Not exported as it's not a valid Next.js Route export
  */
-export function resetCategoryCache() {
+function resetCategoryCache() {
   categoryCache = null
 }
 
