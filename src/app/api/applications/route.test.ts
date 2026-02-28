@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 // @TASK P3-R5.1 - Applications Resource API 테스트
 // @SPEC docs/planning/02-trd.md#Applications-API
 
