@@ -16,6 +16,13 @@ let categoryCache: CategoryCache | null = null
 const CACHE_TTL = 5 * 60 * 1000 // 5 minutes in milliseconds
 
 /**
+ * Reset the category cache (used for testing)
+ */
+export function resetCategoryCache(): void {
+  categoryCache = null
+}
+
+/**
  * Check if cache is still valid
  */
 function isCacheValid(): boolean {

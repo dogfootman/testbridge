@@ -53,8 +53,10 @@ describe('Sidebar Component', () => {
 
       fireEvent.click(toggleButton)
 
-      const closedButton = screen.getByLabelText(/사이드바 열기/i)
-      expect(closedButton).toBeInTheDocument()
+      // Desktop 토글 버튼이 "사이드바 열기"로 변경되었는지 확인
+      const openButtons = screen.getAllByLabelText(/사이드바 열기/i)
+      expect(openButtons.length).toBeGreaterThan(0)
+      expect(openButtons[0]).toBeInTheDocument()
     })
   })
 

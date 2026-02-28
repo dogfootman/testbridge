@@ -17,9 +17,9 @@ export async function GET(request: NextRequest) {
     // Parse and validate query parameters
     const { searchParams } = new URL(request.url)
     const queryParams = {
-      page: searchParams.get('page'),
-      limit: searchParams.get('limit'),
-      isRead: searchParams.get('isRead'),
+      page: searchParams.get('page') ?? undefined,
+      limit: searchParams.get('limit') ?? undefined,
+      isRead: searchParams.get('isRead') ?? undefined,
     }
 
     let validatedQuery
@@ -60,8 +60,11 @@ export async function GET(request: NextRequest) {
     // Calculate total pages
     const totalPages = Math.ceil(total / limit)
 
+    // Exclude userId from response
+    const data = notifications.map(({ userId: _userId, ...rest }) => rest)
+
     return NextResponse.json({
-      data: notifications,
+      data,
       pagination: {
         page,
         limit,
