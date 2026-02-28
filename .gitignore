@@ -42,3 +42,4 @@ prisma/.env
 # Misc
 .turbo
 .vercel
+worktree/
