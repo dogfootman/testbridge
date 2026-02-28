@@ -8,6 +8,11 @@ import { prisma } from '@/lib/prisma'
 /**
  * PATCH /api/applications/[id]
  * Approve or reject application (developer only)
+ *
+ * Valid transitions:
+ * - PENDING -> APPROVED | REJECTED
+ * - WAITLISTED -> APPROVED | REJECTED
+ * - APPROVED -> REJECTED (un-approve, triggers auto-approve of waitlisted)
  */
 export async function PATCH(
   request: NextRequest,
@@ -37,17 +42,11 @@ export async function PATCH(
       )
     }
 
-    // Find application
+    // Find application with app details
     const application = await prisma.application.findUnique({
       where: { id: applicationId },
       include: {
-        app: {
-          select: {
-            id: true,
-            developerId: true,
-            targetTesters: true,
-          },
-        },
+        app: true,
       },
     })
 
@@ -61,60 +60,58 @@ export async function PATCH(
     }
 
     // Check if application can be updated
-    const validStatuses = ['PENDING', 'WAITLISTED', 'APPROVED']
-    if (!validStatuses.includes(application.status)) {
+    // APPROVED applications can be rejected if the app has targetTesters
+    // (triggers auto-approve of first waitlisted application)
+    const isApprovedRejection =
+      application.status === 'APPROVED' &&
+      status === 'REJECTED' &&
+      application.app.targetTesters
+
+    // Only PENDING or WAITLISTED applications can be modified normally
+    if (
+      application.status !== 'PENDING' &&
+      application.status !== 'WAITLISTED' &&
+      !isApprovedRejection
+    ) {
       return NextResponse.json(
-        { error: 'Application cannot be updated from current status' },
+        { error: 'Application is not in PENDING or WAITLISTED status' },
         { status: 400 }
       )
     }
 
-    // If already in target status, return error
-    if (application.status === status) {
-      return NextResponse.json(
-        { error: `Application is already ${status}` },
-        { status: 400 }
-      )
-    }
+    // Update application status
+    const updatedApplication = await prisma.application.update({
+      where: { id: applicationId },
+      data: {
+        status,
+        approvedAt: status === 'APPROVED' ? new Date() : null,
+      },
+    })
 
-    // Use transaction for race condition safety
-    const result = await prisma.$transaction(async (tx) => {
-      // Update application
-      const updatedApplication = await tx.application.update({
-        where: { id: applicationId },
-        data: {
-          status,
-          approvedAt: status === 'APPROVED' ? new Date() : null,
+    // If rejecting an approved application, auto-approve first waitlisted
+    if (isApprovedRejection) {
+      const waitlistedApplication = await prisma.application.findFirst({
+        where: {
+          appId: application.appId,
+          status: 'WAITLISTED',
+        },
+        orderBy: {
+          appliedAt: 'asc',
         },
       })
 
-      // If rejecting an approved application, auto-approve first waitlisted
-      if (status === 'REJECTED' && application.status === 'APPROVED') {
-        const waitlistedApplication = await tx.application.findFirst({
-          where: {
-            appId: application.app.id,
-            status: 'WAITLISTED',
-          },
-          orderBy: {
-            appliedAt: 'asc',
+      if (waitlistedApplication) {
+        await prisma.application.update({
+          where: { id: waitlistedApplication.id },
+          data: {
+            status: 'APPROVED',
+            approvedAt: new Date(),
           },
         })
-
-        if (waitlistedApplication) {
-          await tx.application.update({
-            where: { id: waitlistedApplication.id },
-            data: {
-              status: 'APPROVED',
-              approvedAt: new Date(),
-            },
-          })
-        }
       }
+    }
 
-      return updatedApplication
-    })
-
-    return NextResponse.json(result, { status: 200 })
+    return NextResponse.json(updatedApplication, { status: 200 })
   } catch (error) {
     console.error('PATCH /api/applications/[id] error:', error)
     return NextResponse.json(

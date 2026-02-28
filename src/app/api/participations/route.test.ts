@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 // @TASK P3-R6.1 - Participations Resource API Tests (List)
 // @SPEC specs/screens/tester-participations.yaml
 

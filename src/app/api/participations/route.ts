@@ -1,26 +1,55 @@
 // @TASK P3-S9 - Participations API
-// @SPEC specs/screens/app-detail.yaml
+// @SPEC specs/screens/tester-participations.yaml
 
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { getSession } from '@/lib/auth'
 
 /**
  * GET /api/participations
- * Get participations (filter by appId)
+ * Get participations for the authenticated user (filter by appId, status)
  */
 export async function GET(request: NextRequest) {
   try {
+    const session = await getSession()
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const userId = parseInt(session.user.id)
     const { searchParams } = new URL(request.url)
     const appIdParam = searchParams.get('appId')
+    const statusParam = searchParams.get('status')
 
-    const where: any = {}
+    const where: any = {
+      testerId: userId,
+    }
     if (appIdParam) {
       where.appId = parseInt(appIdParam)
+    }
+    if (statusParam) {
+      where.status = statusParam
     }
 
     const participations = await prisma.participation.findMany({
       where,
       include: {
+        app: {
+          select: {
+            id: true,
+            appName: true,
+            testStartDate: true,
+            testEndDate: true,
+            rewardAmount: true,
+            rewardType: true,
+            images: {
+              select: {
+                url: true,
+                type: true,
+              },
+            },
+          },
+        },
         tester: {
           select: {
             id: true,
@@ -29,6 +58,7 @@ export async function GET(request: NextRequest) {
             profileImageUrl: true,
           },
         },
+        feedback: true,
       },
       orderBy: {
         joinedAt: 'desc',

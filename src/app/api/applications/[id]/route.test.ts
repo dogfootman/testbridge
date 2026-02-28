@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 // @TASK P3-R5.2 - Application Approval/Rejection API 테스트
 // @SPEC docs/planning/02-trd.md#Applications-Status-Update
 

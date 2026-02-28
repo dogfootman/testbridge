@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 // @TASK P3-R6.2 - Participations Detail & Status Update API Tests
 // @SPEC specs/screens/tester-participations.yaml
 
