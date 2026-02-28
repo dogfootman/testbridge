@@ -1,0 +1,144 @@
+# S-04: 마이페이지 / 프로필
+# Version: 2.0
+
+version: "2.0"
+
+screen:
+  id: S-04
+  name: 마이페이지 / 프로필
+  route: /profile
+  layout: sidebar-main
+
+data_requirements:
+  - resource: users
+    needs: [id, email, nickname, profileImageUrl, role, createdAt]
+    action: read, update
+  - resource: tester_profiles
+    needs: [userId, points, trustScore, badge]
+    action: read (테스터)
+  - resource: developer_profiles
+    needs: [userId, credits, totalApps, totalTesters]
+    action: read (개발자)
+  - resource: subscription_plans
+    needs: [userId, planType, status, expiresAt]
+    action: read
+  - resource: notifications
+    needs: [userId, type, isEnabled]
+    action: update
+
+components:
+  - id: profile_card
+    type: card
+    position: main
+    function: 프로필 요약 (아바타, 닉네임, 역할, 가입일)
+    data_source:
+      resource: users
+
+  - id: profile_edit_form
+    type: form_group
+    position: main
+    function: 프로필 편집 (닉네임, 소개, 프로필 이미지)
+    data_source:
+      resource: users
+      fields: [nickname, bio, profileImageUrl]
+
+  - id: role_switch
+    type: toggle
+    position: main
+    function: 역할 전환 (개발자 ↔ 테스터 ↔ 둘 다)
+    data_source:
+      resource: users
+      field: role
+
+  - id: subscription_card
+    type: card
+    position: main
+    function: 구독 플랜 정보 / 변경
+    data_source:
+      resource: subscription_plans
+
+  - id: credits_balance
+    type: stat_card
+    position: main
+    function: 크레딧 잔액 (상호 테스트 크레딧)
+    data_source:
+      resource: developer_profiles
+      field: credits
+      conditional: role === DEVELOPER || role === BOTH
+
+  - id: points_balance
+    type: stat_card
+    position: main
+    function: 리워드 포인트 잔액 (테스터)
+    data_source:
+      resource: tester_profiles
+      field: points
+      conditional: role === TESTER || role === BOTH
+
+  - id: trust_badge
+    type: badge
+    position: main
+    function: 신뢰도 배지 (Bronze/Silver/Gold/Diamond)
+    data_source:
+      resource: tester_profiles
+      field: badge
+      conditional: role === TESTER || role === BOTH
+
+  - id: notification_settings
+    type: form_group
+    position: main
+    function: 알림 설정 (이메일, 푸시, SMS)
+    data_source:
+      resource: notifications
+
+  - id: logout_button
+    type: button
+    position: bottom
+    function: 로그아웃 버튼
+
+  - id: delete_account_button
+    type: button
+    position: bottom
+    function: 회원탈퇴 버튼
+
+events:
+  - trigger: 프로필 편집 저장
+    action: users 업데이트 (nickname, bio, profileImageUrl)
+    result: 성공 메시지 "프로필이 업데이트되었습니다."
+
+  - trigger: 역할 전환
+    action: users.role 업데이트
+    result: 역할 변경 후 해당 대시보드로 리다이렉트
+
+  - trigger: 구독 플랜 변경
+    action: subscription_plans 업데이트 또는 생성
+    result: 결제 페이지 이동 (유료 플랜)
+
+  - trigger: 알림 설정 변경
+    action: notifications.isEnabled 업데이트
+    result: 설정 저장 확인 메시지
+
+  - trigger: 로그아웃 버튼 클릭
+    action: 세션 종료, 쿠키 삭제
+    result: 랜딩 페이지로 리다이렉트 (/)
+
+  - trigger: 회원탈퇴 버튼 클릭
+    action: 확인 모달 표시 → users.status → DELETED
+    result: 탈퇴 완료, 랜딩 페이지로 리다이렉트
+
+tests:
+  - name: 프로필 편집 성공
+    when: 닉네임 변경 후 저장 버튼 클릭
+    then: [users 업데이트, 성공 메시지 표시]
+
+  - name: 역할 전환 (테스터 → 개발자)
+    when: 역할 토글 변경 (TESTER → DEVELOPER)
+    then: [users.role 업데이트, 개발자 대시보드로 리다이렉트]
+
+  - name: 회원탈퇴 확인 모달
+    when: 회원탈퇴 버튼 클릭
+    then: [확인 모달 표시, "정말 탈퇴하시겠습니까?" 메시지]
+
+  - name: 크레딧 잔액 표시 (개발자 전용)
+    when: role = DEVELOPER 또는 BOTH
+    then: [credits_balance 카드 표시, credits 값 표시]

@@ -1,0 +1,129 @@
+# T-02: 앱 상세 (테스터 뷰)
+# Version: 2.0
+
+version: "2.0"
+
+screen:
+  id: T-02
+  name: 앱 상세 (테스터 뷰)
+  route: /tester/apps/:id
+  layout: detail
+
+data_requirements:
+  - resource: apps
+    needs: [id, appName, packageName, categoryId, iconUrl, description, testStartDate, testEndDate, rewardType, rewardAmount, targetTesters, feedbackRequired, testGuide]
+    action: read
+  - resource: app_images
+    needs: [appId, url, type, sortOrder]
+    filters: { appId: ":id" }
+    action: read
+  - resource: applications
+    needs: [appId, testerId, status]
+    filters: { appId: ":id", testerId: ":userId" }
+    action: create, read (지원 여부 확인)
+  - resource: participations
+    needs: [appId, status]
+    filters: { appId: ":id" }
+    action: read (남은 자리 계산)
+  - resource: users
+    needs: [id, nickname, profileImageUrl]
+    action: read (개발자 정보)
+
+components:
+  - id: app_header
+    type: card
+    position: top
+    function: 앱 아이콘, 이름, 카테고리
+    data_source:
+      resource: apps
+
+  - id: screenshot_gallery
+    type: carousel
+    position: main
+    function: 스크린샷 갤러리 (스와이프)
+    data_source:
+      resource: app_images
+
+  - id: app_description
+    type: text_block
+    position: main
+    function: 앱 설명 (개발자 작성)
+    data_source:
+      resource: apps
+      field: description
+
+  - id: test_info_card
+    type: card
+    position: main
+    function: 테스트 정보 (기간, 리워드, 조건, 남은 인원)
+    data_source:
+      resource: apps
+
+  - id: developer_profile
+    type: profile_card
+    position: main
+    function: 개발자 프로필 (닉네임, 등록 앱 수)
+    data_source:
+      resource: users
+
+  - id: test_guide
+    type: text_block
+    position: main
+    function: 테스터 가이드 (개발자 작성)
+    data_source:
+      resource: apps
+      field: testGuide
+
+  - id: apply_button
+    type: button
+    position: bottom
+    function: "테스트 지원하기" 버튼
+
+  - id: apply_modal
+    type: modal
+    position: overlay
+    function: 지원 시 간단 자기소개 / 보유 기기 정보 입력
+    data_source:
+      fields: [message, deviceInfo]
+
+events:
+  - trigger: "테스트 지원하기" 버튼 클릭
+    action: apply_modal 표시
+    result: 자기소개 및 기기 정보 입력 폼 표시
+
+  - trigger: 지원서 제출
+    action: applications 생성 (status=PENDING)
+    result: 성공 메시지 "지원이 완료되었습니다. 승인을 기다려주세요."
+
+  - trigger: 스크린샷 갤러리 스와이프
+    action: app_images 순서대로 표시
+    result: 이미지 전환
+
+  - trigger: 개발자 프로필 클릭
+    action: 개발자 공개 프로필 페이지 이동
+    result: 개발자 정보 페이지
+
+tests:
+  - name: 앱 상세 페이지 로드
+    when: 페이지 접속
+    then: [앱 정보 표시, 스크린샷 갤러리 표시, 개발자 프로필 표시]
+
+  - name: 지원 가능 상태
+    when: 지원하지 않은 앱 + 모집 중
+    then: ["테스트 지원하기" 버튼 활성화]
+
+  - name: 이미 지원한 상태
+    when: applications에 해당 앱 지원 내역 존재
+    then: ["지원 완료" 버튼 비활성화, "승인 대기 중" 표시]
+
+  - name: 남은 자리 계산
+    when: test_info_card 렌더링
+    then: [participations에서 status=ACTIVE 개수 집계, "5/20 남음" 형식 표시]
+
+  - name: 지원서 제출 성공
+    when: apply_modal에서 제출 버튼 클릭
+    then: [applications 생성, 성공 메시지, 내 테스트 현황 페이지 이동]
+
+  - name: 필수 필드 검증
+    when: 기기 정보 미입력 상태에서 제출
+    then: [에러 메시지 "기기 정보를 입력해주세요."]

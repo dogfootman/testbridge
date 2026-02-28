@@ -1,0 +1,78 @@
+# T-01: 테스터 홈 / 앱 탐색
+# Version: 2.0
+
+version: "2.0"
+
+screen:
+  id: T-01
+  name: 테스터 홈 / 앱 탐색
+  route: /tester
+  layout: sidebar-main
+
+data_requirements:
+  - resource: apps
+    needs: [id, appName, categoryId, iconUrl, description, rewardAmount, rewardType, targetTesters, status]
+    filters: { status: "RECRUITING", page: "?page", category: "?category", rewardMin: "?rewardMin" }
+    action: read
+  - resource: categories
+    needs: [id, name, icon]
+    action: read
+
+components:
+  - id: sidebar
+    type: filter_panel
+    position: sidebar
+    function: 카테고리, 리워드 금액, 정렬 필터
+    data_source:
+      resource: categories
+
+  - id: app_grid
+    type: grid
+    position: main
+    function: 앱 카드 그리드 (아이콘, 이름, 리워드, 남은 자리)
+    data_source:
+      resource: apps
+
+  - id: search_bar
+    type: input
+    position: top
+    function: 앱 이름 검색
+    data_source:
+      placeholder: "앱 이름 또는 키워드 검색..."
+
+  - id: sort_dropdown
+    type: dropdown
+    position: top-right
+    function: 정렬 (최신순, 리워드 높은순, 인기순)
+    data_source:
+      options: [latest, reward, popular]
+
+events:
+  - trigger: 카테고리 선택
+    action: apps 필터링 (categoryId)
+    result: 앱 목록 업데이트
+
+  - trigger: 리워드 금액 범위 설정
+    action: apps 필터링 (rewardAmount)
+    result: 앱 목록 업데이트
+
+  - trigger: 앱 카드 클릭
+    action: 앱 상세 (/tester/apps/:id) 이동
+    result: T-02 화면 진입
+
+  - trigger: 검색어 입력
+    action: apps 검색 (appName)
+    result: 앱 목록 업데이트
+
+tests:
+  - name: 초기 로드
+    when: 페이지 접속
+    then: [모집 중인 앱 12개 표시, 카테고리 사이드바 표시]
+
+  - name: 카테고리 필터링
+    when: "유틸리티" 카테고리 선택
+    then: [유틸리티 앱만 표시]
+
+  - name: HOT 태그 표시
+    when: 남은 자리 < 5 또는 리워드 ≥ 5000
+    then: [앱 카드에 HOT 태그 표시]

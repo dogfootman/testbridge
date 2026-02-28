@@ -1,0 +1,399 @@
+# TestBridge 도메인 리소스 정의
+# Version: 2.0
+# 생성일: 2026-02-28
+
+version: "2.0"
+
+resources:
+  # ==========================================
+  # 사용자 관련 리소스
+  # ==========================================
+
+  users:
+    description: 사용자 (개발자, 테스터, 관리자)
+    fields:
+      id: integer
+      email: string (encrypted)
+      name: string
+      nickname: string (unique)
+      bio: string
+      profileImageUrl: string (url)
+      role: enum[NONE, DEVELOPER, TESTER, BOTH, ADMIN]
+      status: enum[ACTIVE, SUSPENDED, WITHDRAWN]
+      currentPlan: enum[FREE, BASIC, PRO, ENTERPRISE]
+      pointBalance: integer
+      creditBalance: integer
+      trustScore: integer (0-100)
+      trustBadge: enum[BRONZE, SILVER, GOLD, DIAMOND]
+      remainingApps: integer
+      createdAt: datetime
+    relations:
+      apps: apps[]
+      participations: participations[]
+      feedbacks: feedbacks[]
+      withdrawals: withdrawals[]
+      notifications: notifications[]
+
+  # ==========================================
+  # 앱 관련 리소스
+  # ==========================================
+
+  apps:
+    description: 등록된 앱
+    fields:
+      id: integer
+      developerId: integer
+      appName: string (max 50)
+      packageName: string (unique)
+      categoryId: integer
+      description: string (max 500)
+      testType: enum[PAID_REWARD, CREDIT_EXCHANGE]
+      targetTesters: integer
+      testLink: string (url)
+      rewardType: enum[BASIC, WITH_FEEDBACK, ADVANCED]
+      rewardAmount: integer (nullable)
+      feedbackRequired: boolean
+      testGuide: string
+      status: enum[PENDING_APPROVAL, RECRUITING, IN_TESTING, COMPLETED, PRODUCTION, REJECTED, CANCELLED, BLOCKED]
+      testStartDate: datetime (nullable)
+      testEndDate: datetime (nullable)
+      approvedAt: datetime (nullable)
+      productionConfirmedAt: datetime (nullable)
+      createdAt: datetime
+      updatedAt: datetime
+    relations:
+      developer: users
+      category: categories
+      images: app_images[]
+      applications: applications[]
+      participations: participations[]
+      feedbacks: feedbacks[]
+
+  app_images:
+    description: 앱 아이콘 및 스크린샷
+    fields:
+      id: integer
+      appId: integer
+      type: enum[ICON, SCREENSHOT]
+      url: string (url)
+      thumbnailUrl: string (url, nullable)
+      sortOrder: integer
+      createdAt: datetime
+    relations:
+      app: apps
+
+  categories:
+    description: 앱 카테고리
+    fields:
+      id: integer
+      name: string (unique)
+      icon: string (emoji)
+      sortOrder: integer
+      isActive: boolean
+      createdAt: datetime
+
+  # ==========================================
+  # 테스트 관련 리소스
+  # ==========================================
+
+  applications:
+    description: 테스트 지원
+    fields:
+      id: integer
+      appId: integer
+      testerId: integer
+      deviceInfo: string
+      message: string
+      status: enum[PENDING, APPROVED, REJECTED, WAITLISTED]
+      appliedAt: datetime
+      approvedAt: datetime (nullable)
+    relations:
+      app: apps
+      tester: users
+      participation: participations (nullable)
+
+  participations:
+    description: 테스트 참여
+    fields:
+      id: integer
+      appId: integer
+      testerId: integer
+      applicationId: integer
+      status: enum[ACTIVE, DROPPED, COMPLETED]
+      rewardStatus: enum[NONE, PAID, PENDING_FEEDBACK, SKIPPED]
+      lastAppRunAt: datetime (nullable)
+      joinedAt: datetime
+      droppedAt: datetime (nullable)
+      dropReason: string (nullable)
+      completedAt: datetime (nullable)
+    relations:
+      app: apps
+      tester: users
+      application: applications
+      feedback: feedbacks (nullable)
+
+  feedbacks:
+    description: 피드백
+    fields:
+      id: integer
+      appId: integer
+      testerId: integer
+      participationId: integer
+      overallRating: integer (1-5)
+      comment: string
+      createdAt: datetime
+      updatedAt: datetime
+    relations:
+      app: apps
+      tester: users
+      participation: participations
+      ratings: feedback_ratings[]
+      bugReport: bug_reports (nullable)
+
+  feedback_ratings:
+    description: 항목별 별점
+    fields:
+      id: integer
+      feedbackId: integer
+      itemType: enum[UI_UX, PERFORMANCE, FUNCTIONALITY, STABILITY]
+      score: integer (1-5)
+    relations:
+      feedback: feedbacks
+
+  bug_reports:
+    description: 버그 리포트
+    fields:
+      id: integer
+      feedbackId: integer
+      title: string (max 100)
+      description: string
+      deviceInfo: string
+      createdAt: datetime
+    relations:
+      feedback: feedbacks
+      images: bug_report_images[]
+
+  bug_report_images:
+    description: 버그 첨부 이미지
+    fields:
+      id: integer
+      bugReportId: integer
+      url: string (url)
+      sortOrder: integer
+      createdAt: datetime
+    relations:
+      bugReport: bug_reports
+
+  # ==========================================
+  # 리워드 관련 리소스
+  # ==========================================
+
+  reward_histories:
+    description: 포인트 변동 이력
+    fields:
+      id: integer
+      userId: integer
+      appId: integer (nullable)
+      type: enum[EARNED, WITHDRAWN, WITHDRAWAL_REFUND, EXCHANGED]
+      amount: integer
+      balance: integer
+      description: string
+      createdAt: datetime
+    relations:
+      user: users
+      app: apps (nullable)
+
+  credit_histories:
+    description: 크레딧 변동 이력
+    fields:
+      id: integer
+      userId: integer
+      appId: integer (nullable)
+      type: enum[EARNED_TEST, EARNED_FEEDBACK, USED_REGISTER]
+      amount: integer
+      balance: integer
+      description: string
+      createdAt: datetime
+    relations:
+      user: users
+      app: apps (nullable)
+
+  withdrawals:
+    description: 출금 요청
+    fields:
+      id: integer
+      testerId: integer
+      bankAccountId: integer (nullable)
+      method: enum[BANK_TRANSFER, PAYPAL]
+      amount: integer
+      status: enum[REQUESTED, PROCESSING, ON_HOLD, COMPLETED, FAILED, REJECTED]
+      flagged: boolean
+      flagReason: string (nullable)
+      approvedBy: integer (nullable)
+      approvedAt: datetime (nullable)
+      completedAt: datetime (nullable)
+      requestedAt: datetime
+    relations:
+      tester: users
+      bankAccount: bank_accounts (nullable)
+      approver: users (nullable)
+
+  bank_accounts:
+    description: 출금 계좌
+    fields:
+      id: integer
+      userId: integer
+      method: enum[BANK_TRANSFER, PAYPAL]
+      bankCode: string (nullable)
+      bankName: string (nullable)
+      accountNumber: string (encrypted, nullable)
+      accountHolder: string (encrypted, nullable)
+      paypalEmail: string (encrypted, nullable)
+      isVerified: boolean
+      isDefault: boolean
+    relations:
+      user: users
+
+  # ==========================================
+  # 결제 관련 리소스
+  # ==========================================
+
+  payments:
+    description: 결제 이력
+    fields:
+      id: integer
+      userId: integer
+      appId: integer (nullable)
+      subscriptionId: integer (nullable)
+      type: enum[ONE_TIME_20, ONE_TIME_30, SUBSCRIPTION, BOOST, REFUND]
+      orderId: string (unique)
+      amount: integer
+      method: string (nullable)
+      status: enum[PENDING, SUCCESS, FAILED, REFUNDED, PARTIALLY_REFUNDED]
+      pgPaymentId: string (nullable)
+      pgReceiptUrl: string (url, nullable)
+      paidAt: datetime (nullable)
+      createdAt: datetime
+    relations:
+      user: users
+      app: apps (nullable)
+      subscription: subscriptions (nullable)
+
+  subscriptions:
+    description: 구독
+    fields:
+      id: integer
+      userId: integer
+      plan: enum[FREE, BASIC, PRO, ENTERPRISE]
+      price: integer
+      pendingPlan: enum[FREE, BASIC, PRO, ENTERPRISE] (nullable)
+      status: enum[ACTIVE, CANCELLING, CANCELLED, PAST_DUE]
+      startDate: date
+      nextBillingDate: date
+      cancelledAt: datetime (nullable)
+    relations:
+      user: users
+      payments: payments[]
+
+  # ==========================================
+  # 알림 관련 리소스
+  # ==========================================
+
+  notifications:
+    description: 알림
+    fields:
+      id: integer
+      userId: integer
+      type: enum[SELECTED, TEST_STARTED, DROPOUT, COMPLETED, REWARD, FEEDBACK_RECEIVED, WITHDRAWAL_DONE, NEW_APPLICATION, SYSTEM, WARNING, INACTIVE_WARNING]
+      title: string (max 100)
+      message: string (max 500)
+      linkUrl: string (url, nullable)
+      isRead: boolean
+      relatedAppId: integer (nullable)
+      createdAt: datetime
+    relations:
+      user: users
+      relatedApp: apps (nullable)
+
+  # ==========================================
+  # 관리자 관련 리소스
+  # ==========================================
+
+  tickets:
+    description: 고객 문의
+    fields:
+      id: integer
+      ticketNumber: string (unique)
+      userId: integer
+      inquiryType: enum[BUG, PAYMENT, ACCOUNT, TEST, REWARD, REPORT, FEATURE, OTHER]
+      title: string (max 100)
+      relatedAppId: integer (nullable)
+      priority: enum[URGENT, HIGH, NORMAL, LOW]
+      status: enum[SUBMITTED, IN_PROGRESS, ANSWERED, REOPENED, CLOSED]
+      assignedTo: integer (nullable)
+      closedAt: datetime (nullable)
+      createdAt: datetime
+      updatedAt: datetime
+    relations:
+      user: users
+      relatedApp: apps (nullable)
+      assignee: users (nullable)
+      messages: ticket_messages[]
+
+  ticket_messages:
+    description: 문의 메시지
+    fields:
+      id: integer
+      ticketId: integer
+      senderId: integer
+      senderRole: enum[USER, ADMIN]
+      content: string
+      createdAt: datetime
+    relations:
+      ticket: tickets
+
+  reports:
+    description: 신고
+    fields:
+      id: integer
+      reporterId: integer
+      targetType: enum[USER, APP]
+      targetUserId: integer (nullable)
+      targetAppId: integer (nullable)
+      reason: string (max 30)
+      detail: string (max 500, nullable)
+      status: enum[SUBMITTED, IN_REVIEW, WARNING, SUSPENDED, BLOCKED, DISMISSED]
+      processedBy: integer (nullable)
+      processedAt: datetime (nullable)
+      createdAt: datetime
+    relations:
+      reporter: users
+      targetApp: apps (nullable)
+      processor: users (nullable)
+
+  faqs:
+    description: FAQ
+    fields:
+      id: integer
+      category: enum[TEST, REWARD, PAYMENT, ACCOUNT]
+      question: string
+      answer: string
+      sortOrder: integer
+      isActive: boolean
+      createdAt: datetime
+      updatedAt: datetime
+
+  notices:
+    description: 공지사항
+    fields:
+      id: integer
+      tag: enum[IMPORTANT, NOTICE, UPDATE, EVENT]
+      title: string (max 200)
+      content: string
+      isPinned: boolean
+      authorId: integer
+      publishedAt: datetime (nullable)
+      createdAt: datetime
+      updatedAt: datetime
+    relations:
+      author: users

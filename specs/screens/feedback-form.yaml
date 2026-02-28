@@ -1,0 +1,82 @@
+# T-04: 피드백 작성
+# Version: 2.0
+
+version: "2.0"
+
+screen:
+  id: T-04
+  name: 피드백 작성
+  route: /tester/participations/:id/feedback
+  layout: form
+
+data_requirements:
+  - resource: participations
+    needs: [id, app, tester]
+    action: read
+  - resource: feedbacks
+    needs: [overallRating, comment]
+    action: create
+  - resource: feedback_ratings
+    needs: [itemType, score]
+    action: create
+  - resource: bug_reports
+    needs: [title, description]
+    action: create (선택)
+
+components:
+  - id: overall_rating
+    type: star_rating
+    position: main
+    function: 전체 만족도 (1~5점)
+    data_source:
+      field: overallRating
+
+  - id: item_ratings
+    type: rating_group
+    position: main
+    function: 항목별 별점 (UI/UX, 성능, 기능, 안정성)
+    data_source:
+      items: [UI_UX, PERFORMANCE, FUNCTIONALITY, STABILITY]
+
+  - id: comment_textarea
+    type: textarea
+    position: main
+    function: 텍스트 피드백
+    data_source:
+      field: comment
+      placeholder: "앱 사용 소감을 자유롭게 작성해주세요..."
+
+  - id: bug_report_section
+    type: form_group
+    position: main
+    function: 버그 리포트 (제목, 재현방법, 스크린샷)
+    data_source:
+      fields: [title, description]
+      optional: true
+
+  - id: submit_button
+    type: button
+    position: bottom
+    function: 제출 버튼
+
+events:
+  - trigger: 제출 버튼 클릭
+    action: feedbacks 생성 → feedback_ratings 생성 → bug_reports 생성 (선택)
+    result: 내 테스트 현황 (/tester/participations) 이동
+
+  - trigger: 별점 미입력 제출
+    action: 유효성 검증 실패
+    result: 에러 메시지 "별점을 입력해주세요."
+
+tests:
+  - name: 피드백 제출 성공
+    when: 전체 별점 + 항목별 별점 + 텍스트 입력 후 제출
+    then: [feedback 생성, 개발자에게 알림, 완료 페이지 이동]
+
+  - name: 버그 리포트 선택 제출
+    when: 버그 제목 + 설명 입력 후 제출
+    then: [bug_report 생성, 이미지 첨부 가능]
+
+  - name: 필수 필드 검증
+    when: 전체 별점 미입력 제출
+    then: [에러 "전체 만족도를 선택해주세요."]

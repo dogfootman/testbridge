@@ -1,0 +1,97 @@
+# D-03: 내 앱 목록
+# Version: 2.0
+
+version: "2.0"
+
+screen:
+  id: D-03
+  name: 내 앱 목록
+  route: /developer/apps
+  layout: list
+
+data_requirements:
+  - resource: apps
+    needs: [id, appName, iconUrl, status, testStartDate, testEndDate, targetTesters, createdAt]
+    filters: { developerId: ":userId", page: "?page", status: "?status" }
+    action: read
+  - resource: participations
+    needs: [appId, status]
+    filters: { appId: ":appId" }
+    action: read (진행률 계산)
+
+components:
+  - id: status_tabs
+    type: tabs
+    position: top
+    function: 상태 필터 탭
+    data_source:
+      tabs: [전체, 모집중, 테스트중, 완료, 프로덕션]
+
+  - id: app_list
+    type: list
+    position: main
+    function: 앱 카드 리스트 (앱 아이콘, 이름, 상태, 진행률)
+    data_source:
+      resource: apps
+
+  - id: new_app_button
+    type: button
+    position: top-right
+    function: "새 앱 등록" 버튼
+
+  - id: empty_state
+    type: empty
+    position: main
+    function: 앱이 없을 때 빈 상태
+    data_source:
+      message: "등록된 앱이 없습니다. 첫 번째 앱을 등록해보세요!"
+
+events:
+  - trigger: 모집중 탭 선택
+    action: apps 필터링 (status: RECRUITING)
+    result: 모집 중인 앱만 표시
+
+  - trigger: 테스트중 탭 선택
+    action: apps 필터링 (status: IN_TESTING)
+    result: 테스트 진행 중인 앱만 표시
+
+  - trigger: 완료 탭 선택
+    action: apps 필터링 (status: COMPLETED)
+    result: 테스트 완료된 앱만 표시
+
+  - trigger: 프로덕션 탭 선택
+    action: apps 필터링 (status: PRODUCTION)
+    result: 프로덕션 등록 완료된 앱만 표시
+
+  - trigger: 앱 카드 클릭
+    action: 앱 상세 페이지 이동
+    result: D-04 화면 진입 (/developer/apps/:id)
+
+  - trigger: "새 앱 등록" 버튼 클릭
+    action: 앱 등록 페이지 이동
+    result: D-02 화면 진입 (/developer/apps/new)
+
+tests:
+  - name: 앱 목록 초기 로드
+    when: 페이지 접속
+    then: [전체 탭 활성화, 모든 앱 표시 (최신순)]
+
+  - name: 상태 필터링
+    when: "테스트중" 탭 선택
+    then: [status=IN_TESTING 앱만 표시]
+
+  - name: 진행률 계산
+    when: 앱 카드 렌더링 (status=IN_TESTING)
+    then: [participations 집계, "15/20 (75%)" 형식 표시]
+
+  - name: 빈 상태 표시
+    when: 등록된 앱 = 0
+    then: [empty_state 표시, "새 앱 등록" 버튼 강조]
+
+  - name: 상태 배지 표시
+    when: 앱 카드 렌더링
+    then:
+      - RECRUITING → "모집 중" (파란색)
+      - IN_TESTING → "테스트 중" (주황색)
+      - COMPLETED → "완료" (초록색)
+      - PRODUCTION → "프로덕션" (보라색)

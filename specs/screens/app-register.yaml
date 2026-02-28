@@ -1,0 +1,99 @@
+# D-02: 앱 등록 (4단계)
+# Version: 2.0
+
+version: "2.0"
+
+screen:
+  id: D-02
+  name: 앱 등록
+  route: /developer/apps/new
+  layout: wizard-form
+
+data_requirements:
+  - resource: apps
+    needs: [appName, packageName, categoryId, description, testType, targetTesters, testLink, rewardType, rewardAmount, feedbackRequired, testGuide]
+    action: create
+  - resource: app_images
+    needs: [url, type, sortOrder]
+    action: create
+  - resource: categories
+    needs: [id, name]
+    action: read
+  - resource: payments
+    needs: [amount, type, status]
+    action: create (PAID_REWARD 선택 시)
+
+components:
+  - id: wizard_steps
+    type: stepper
+    position: top
+    function: 4단계 진행 표시
+    data_source:
+      steps: [기본정보, 테스트설정, 리워드설정, 피드백설정]
+
+  - id: step1_form
+    type: form_group
+    position: main
+    function: 앱 이름, 패키지명, 카테고리, 설명, 아이콘, 스크린샷
+    data_source:
+      resource: apps
+      fields: [appName, packageName, categoryId, description]
+
+  - id: step2_form
+    type: form_group
+    position: main
+    function: 테스트 유형, 테스터 수, Google Play 링크
+    data_source:
+      resource: apps
+      fields: [testType, targetTesters, testLink]
+
+  - id: step3_form
+    type: form_group
+    position: main
+    function: 리워드 유형, 금액, 결제
+    data_source:
+      resource: apps
+      fields: [rewardType, rewardAmount]
+      conditional: testType === PAID_REWARD
+
+  - id: step4_form
+    type: form_group
+    position: main
+    function: 피드백 필수 여부, 평가 항목, 가이드
+    data_source:
+      resource: apps
+      fields: [feedbackRequired, testGuide]
+
+events:
+  - trigger: Step 1 완료
+    action: 기본 정보 세션 저장
+    result: Step 2 진행
+
+  - trigger: Step 2 완료 (PAID_REWARD)
+    action: 테스트 설정 저장
+    result: Step 3 진행
+
+  - trigger: Step 2 완료 (CREDIT_EXCHANGE)
+    action: 크레딧 잔액 확인 (≥50)
+    result: Step 4 진행 또는 에러
+
+  - trigger: Step 3 완료
+    action: 결제 진행 (토스페이먼츠)
+    result: 결제 성공 시 Step 4 진행
+
+  - trigger: Step 4 완료
+    action: 앱 생성 (status=PENDING_APPROVAL)
+    result: 내 앱 목록 (/developer/apps) 이동
+
+tests:
+  - name: 패키지명 중복 검증
+    when: 이미 등록된 패키지명 입력
+    then: [에러 "이미 등록된 패키지명입니다."]
+
+  - name: 크레딧 부족 검증
+    when: CREDIT_EXCHANGE 선택 + 잔액 < 50
+    then: [에러 "크레딧이 부족합니다. (현재: X, 필요: 50)"]
+
+  - trigger: 결제 실패
+    when: 결제 취소 또는 실패
+    then: [Step 3 화면 유지, 에러 메시지 표시]

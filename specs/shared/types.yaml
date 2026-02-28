@@ -1,0 +1,228 @@
+# 공통 타입 정의
+# Version: 2.0
+
+version: "2.0"
+
+enums:
+  Role:
+    values:
+      - DEVELOPER
+      - TESTER
+      - BOTH
+      - ADMIN
+    description: 사용자 역할
+
+  AppStatus:
+    values:
+      - PENDING_APPROVAL
+      - RECRUITING
+      - IN_TESTING
+      - COMPLETED
+      - PRODUCTION
+      - REJECTED
+      - CANCELLED
+      - BLOCKED
+    description: 앱 상태
+
+  ApplicationStatus:
+    values:
+      - PENDING
+      - APPROVED
+      - REJECTED
+      - CANCELLED
+    description: 지원서 상태
+
+  ParticipationStatus:
+    values:
+      - ACTIVE
+      - COMPLETED
+      - DROPPED
+    description: 참여 상태
+
+  RewardType:
+    values:
+      - PAID_REWARD
+      - CREDIT_EXCHANGE
+    description: 리워드 유형
+
+  TestType:
+    values:
+      - PAID_REWARD
+      - CREDIT_EXCHANGE
+    description: 테스트 유형 (동일 REWARD_TYPE)
+
+  NotificationType:
+    values:
+      - APPLICATION_APPROVED
+      - APPLICATION_REJECTED
+      - TEST_STARTED
+      - TEST_ENDED
+      - FEEDBACK_SUBMITTED
+      - REWARD_PAID
+      - DROPOUT_WARNING
+      - APP_APPROVED
+      - APP_REJECTED
+    description: 알림 타입
+
+  PaymentStatus:
+    values:
+      - PENDING
+      - COMPLETED
+      - FAILED
+      - REFUNDED
+    description: 결제 상태
+
+  WithdrawalStatus:
+    values:
+      - PENDING
+      - PROCESSING
+      - COMPLETED
+      - REJECTED
+    description: 출금 상태
+
+  TrustBadge:
+    values:
+      - BRONZE
+      - SILVER
+      - GOLD
+      - DIAMOND
+    description: 신뢰도 배지
+
+  SubscriptionPlanType:
+    values:
+      - FREE
+      - BASIC
+      - PRO
+      - ENTERPRISE
+    description: 구독 플랜 타입
+
+  FeedbackRatingItemType:
+    values:
+      - UI_UX
+      - PERFORMANCE
+      - FUNCTIONALITY
+      - STABILITY
+    description: 피드백 평가 항목 타입
+
+common_types:
+  # 날짜/시간
+  datetime:
+    type: string
+    format: ISO 8601
+    example: "2025-01-15T10:30:00Z"
+
+  # 이메일
+  email:
+    type: string
+    format: email
+    example: "user@example.com"
+
+  # URL
+  url:
+    type: string
+    format: uri
+    example: "https://example.com/image.png"
+
+  # 금액
+  amount:
+    type: integer
+    description: 원화 금액 (단위: 원)
+    example: 5000
+
+  # 신뢰도 점수
+  trustScore:
+    type: integer
+    min: 0
+    max: 100
+    description: 테스터 신뢰도 점수
+
+  # 별점
+  rating:
+    type: integer
+    min: 1
+    max: 5
+    description: 1~5점 별점
+
+  # 페이지네이션
+  pagination:
+    type: object
+    properties:
+      page:
+        type: integer
+        min: 1
+        default: 1
+      limit:
+        type: integer
+        min: 1
+        max: 100
+        default: 20
+      total:
+        type: integer
+        description: 전체 항목 수
+      totalPages:
+        type: integer
+        description: 전체 페이지 수
+
+  # 필터
+  filter:
+    type: object
+    description: 쿼리 파라미터 기반 필터링
+    properties:
+      category:
+        type: string
+        optional: true
+      status:
+        type: enum
+        optional: true
+      rewardMin:
+        type: integer
+        optional: true
+      rewardMax:
+        type: integer
+        optional: true
+      page:
+        type: integer
+        optional: true
+
+layout_types:
+  # 레이아웃 유형
+  landing:
+    description: 랜딩 페이지 레이아웃 (히어로 섹션 + 콘텐츠 블록)
+    usage: [landing.yaml]
+
+  center-form:
+    description: 중앙 정렬 폼 레이아웃
+    usage: [signup.yaml, login.yaml]
+
+  sidebar-main:
+    description: 사이드바 + 메인 콘텐츠 레이아웃
+    usage: [tester-home.yaml, profile.yaml]
+
+  dashboard:
+    description: 대시보드 레이아웃 (카드 그리드 + 위젯)
+    usage: [developer-dashboard.yaml]
+
+  tabs:
+    description: 탭 기반 레이아웃
+    usage: [app-detail.yaml, tester-participations.yaml]
+
+  list:
+    description: 리스트 뷰 레이아웃
+    usage: [developer-apps.yaml, notifications.yaml]
+
+  form:
+    description: 폼 레이아웃 (단일 폼)
+    usage: [feedback-form.yaml]
+
+  wizard-form:
+    description: 다단계 위저드 폼 레이아웃
+    usage: [app-register.yaml]
+
+  detail:
+    description: 상세 페이지 레이아웃
+    usage: [app-detail-tester.yaml]
+
+notes: |
+  이 타입들은 specs/domain/resources.yaml의 필드 타입과 일치해야 합니다.
+  새로운 enum이나 공통 타입이 필요하면 이 파일에 추가합니다.
+  화면 명세에서 data_requirements의 needs 필드는 이 타입 시스템을 따릅니다.

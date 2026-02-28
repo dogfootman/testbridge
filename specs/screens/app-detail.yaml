@@ -1,0 +1,100 @@
+# D-04: 앱 상세 / 테스트 관리
+# Version: 2.0
+
+version: "2.0"
+
+screen:
+  id: D-04
+  name: 앱 상세 / 테스트 관리
+  route: /developer/apps/:id
+  layout: tabs
+
+data_requirements:
+  - resource: apps
+    needs: [id, appName, status, testStartDate, testEndDate, targetTesters]
+    action: read
+  - resource: applications
+    needs: [id, tester, deviceInfo, message, status, appliedAt]
+    filters: { appId: ":id" }
+    action: read, update
+  - resource: participations
+    needs: [id, tester, status, lastAppRunAt, joinedAt, dropReason]
+    filters: { appId: ":id" }
+    action: read
+  - resource: feedbacks
+    needs: [id, tester, overallRating, comment, createdAt, ratings, bugReport]
+    filters: { appId: ":id" }
+    action: read
+
+components:
+  - id: status_overview
+    type: card
+    position: top
+    function: D-Day, 옵트인 유지/이탈, 프로그레스 바
+    data_source:
+      resource: participations
+
+  - id: tabs
+    type: tabs
+    position: main
+    function: 현황/지원자/참여자/피드백/가이드 탭
+    data_source:
+      tabs: [현황, 지원자, 참여자, 피드백, 프로덕션가이드]
+
+  - id: applicants_table
+    type: table
+    position: main (지원자 탭)
+    function: 지원자 목록, 승인/거절 버튼
+    data_source:
+      resource: applications
+
+  - id: participants_table
+    type: table
+    position: main (참여자 탭)
+    function: 참여자 상태, 최근 실행 일시
+    data_source:
+      resource: participations
+
+  - id: feedback_list
+    type: list
+    position: main (피드백 탭)
+    function: 피드백 목록, 평균 별점
+    data_source:
+      resource: feedbacks
+
+  - id: production_guide
+    type: content
+    position: main (가이드 탭)
+    function: 프로덕션 등록 체크리스트, 완료 버튼
+    data_source:
+      resource: apps
+
+events:
+  - trigger: 지원자 승인
+    action: applications.status → APPROVED, participations 생성
+    result: 승인수 = targetTesters 시 앱 상태 → IN_TESTING
+
+  - trigger: 지원자 거절
+    action: applications.status → REJECTED
+    result: 지원자 목록에서 제거
+
+  - trigger: 이탈 감지
+    action: participations.status → DROPPED, 대기열 1순위 자동 승인
+    result: 이탈 알림 표시, 참여자 교체
+
+  - trigger: 프로덕션 확인 버튼 클릭
+    action: apps.status → PRODUCTION, 리워드 자동 지급
+    result: 완료 알림, 대시보드 이동
+
+tests:
+  - name: 지원자 승인 성공
+    when: 지원자 승인 버튼 클릭
+    then: [participation 생성, 테스터 선정 알림 발송]
+
+  - name: 테스트 시작 자동 전환
+    when: 승인수 = targetTesters (20명)
+    then: [앱 상태 → IN_TESTING, testStartDate 설정]
+
+  - name: 프로덕션 확인 전제조건
+    when: 옵트인 유지 < 14명 상태에서 완료 버튼 클릭
+    then: [에러 "테스트 요건 미충족 (최소 14명 필요)"]

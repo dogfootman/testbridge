@@ -1,0 +1,142 @@
+# T-03: 내 테스트 현황
+# Version: 2.0
+
+version: "2.0"
+
+screen:
+  id: T-03
+  name: 내 테스트 현황
+  route: /tester/participations
+  layout: tabs
+
+data_requirements:
+  - resource: participations
+    needs: [id, app, status, joinedAt, lastAppRunAt, dropReason]
+    filters: { testerId: ":userId", status: ["ACTIVE", "COMPLETED", "DROPPED"] }
+    action: read
+  - resource: applications
+    needs: [id, app, status, appliedAt]
+    filters: { testerId: ":userId", status: ["PENDING", "REJECTED"] }
+    action: read
+  - resource: apps
+    needs: [id, appName, iconUrl, testStartDate, testEndDate, rewardAmount, rewardType]
+    action: read
+  - resource: feedbacks
+    needs: [participationId, overallRating, comment, createdAt]
+    filters: { testerId: ":userId" }
+    action: read
+  - resource: rewards
+    needs: [participationId, amount, status]
+    filters: { testerId: ":userId" }
+    action: read
+
+components:
+  - id: status_tabs
+    type: tabs
+    position: top
+    function: 진행 중 / 완료 / 지원 중 탭
+    data_source:
+      tabs: [진행중, 완료, 지원중]
+
+  - id: active_tests_list
+    type: list
+    position: main (진행 중 탭)
+    function: 진행 중인 테스트 카드
+    data_source:
+      resource: participations
+      filter: { status: ACTIVE }
+
+  - id: completed_tests_list
+    type: list
+    position: main (완료 탭)
+    function: 완료된 테스트 카드
+    data_source:
+      resource: participations
+      filter: { status: COMPLETED }
+
+  - id: pending_applications_list
+    type: list
+    position: main (지원 중 탭)
+    function: 지원 중인 앱 목록
+    data_source:
+      resource: applications
+      filter: { status: PENDING }
+
+  - id: active_test_card
+    type: card
+    position: main (진행 중 탭)
+    function: 앱 아이콘, 이름, D-Day, 프로그레스 바, 오늘 실행 여부
+    data_source:
+      resource: participations
+
+  - id: feedback_button
+    type: button
+    position: card (진행 중 탭)
+    function: "피드백 작성" 버튼
+
+  - id: open_app_button
+    type: button
+    position: card (진행 중 탭)
+    function: "Google Play에서 열기" 버튼
+
+  - id: reward_status
+    type: badge
+    position: card (완료 탭)
+    function: 리워드 수령 상태 (대기 중 / 지급 완료)
+    data_source:
+      resource: rewards
+
+  - id: view_feedback_button
+    type: button
+    position: card (완료 탭)
+    function: "내가 작성한 피드백 보기" 버튼
+
+events:
+  - trigger: "피드백 작성" 버튼 클릭
+    action: 피드백 작성 페이지 이동
+    result: T-04 화면 진입 (/tester/participations/:id/feedback)
+
+  - trigger: "Google Play에서 열기" 버튼 클릭
+    action: 앱의 testLink로 외부 링크 이동
+    result: Google Play 비공개 테스트 링크 열기
+
+  - trigger: "내가 작성한 피드백 보기" 버튼 클릭
+    action: 피드백 상세 페이지 이동
+    result: 피드백 상세 모달 또는 페이지
+
+  - trigger: 진행중 탭 선택
+    action: participations 필터링 (status: ACTIVE)
+    result: 진행 중인 테스트만 표시
+
+  - trigger: 완료 탭 선택
+    action: participations 필터링 (status: COMPLETED)
+    result: 완료된 테스트만 표시
+
+  - trigger: 지원중 탭 선택
+    action: applications 필터링 (status: PENDING)
+    result: 지원 중인 앱만 표시
+
+tests:
+  - name: 초기 로드 (진행 중 탭)
+    when: 페이지 접속
+    then: [진행 중 테스트 표시, D-Day 계산, 프로그레스 바 표시]
+
+  - name: D-Day 계산
+    when: 진행 중 테스트 카드 렌더링
+    then: [testEndDate 기준 남은 일수 계산, "D-10" 형식 표시]
+
+  - name: 프로그레스 바
+    when: 진행 중 테스트 카드 렌더링
+    then: [(오늘 날짜 - joinedAt) / 14 * 100 계산, "7/14일차" 표시]
+
+  - name: 오늘 실행 여부
+    when: lastAppRunAt 확인
+    then: [오늘 날짜와 일치 시 체크 표시, 불일치 시 경고 아이콘]
+
+  - name: 리워드 상태 표시
+    when: 완료된 테스트 카드 렌더링
+    then: [rewards.status에 따라 "대기 중" 또는 "지급 완료" 배지 표시]
+
+  - name: 빈 상태 (진행 중 테스트 없음)
+    when: 진행 중 테스트 = 0
+    then: [빈 상태 표시, "참여 중인 테스트가 없습니다." 메시지]

@@ -1,0 +1,60 @@
+# S-03: 로그인
+# Version: 2.0
+
+version: "2.0"
+
+screen:
+  id: S-03
+  name: 로그인
+  route: /auth/login
+  layout: center-form
+
+data_requirements:
+  - resource: users
+    needs: [id, email, role]
+    action: read (인증)
+
+components:
+  - id: oauth_buttons
+    type: button_group
+    position: main
+    function: 소셜 로그인 버튼 (Google, 카카오, 네이버)
+    data_source:
+      providers: [GOOGLE, KAKAO, NAVER]
+
+  - id: redirect_info
+    type: text
+    position: top
+    function: 리다이렉트 정보 표시 (로그인 후 이동 경로)
+    data_source:
+      message: "로그인 후 계속하려면 인증해주세요"
+
+events:
+  - trigger: Google OAuth 인증 완료
+    action: 서버에 ID Token 전송
+    result: 기존 사용자 → 대시보드 이동, 신규 사용자 → 회원가입 페이지
+
+  - trigger: 카카오 OAuth 인증 완료
+    action: 서버에 인증 코드 전송
+    result: 기존 사용자 → 대시보드 이동, 신규 사용자 → 회원가입 페이지
+
+  - trigger: 네이버 OAuth 인증 완료
+    action: 서버에 인증 코드 전송
+    result: 기존 사용자 → 대시보드 이동, 신규 사용자 → 회원가입 페이지
+
+  - trigger: 인증 실패
+    action: 에러 메시지 표시
+    result: 로그인 화면 유지
+
+tests:
+  - name: Google 로그인 성공 (기존 사용자)
+    when: Google OAuth 인증 완료 + 기존 사용자
+    then: [role에 따라 대시보드 이동, DEVELOPER → /developer, TESTER → /tester]
+
+  - name: Google 로그인 (신규 사용자)
+    when: Google OAuth 인증 완료 + 신규 사용자
+    then: [회원가입 페이지로 리다이렉트 (/auth/signup)]
+
+  - name: 리다이렉트 유지
+    when: 미로그인 상태에서 /tester/apps/123 접근 → 로그인
+    then: [로그인 후 원래 페이지 (/tester/apps/123)로 리다이렉트]

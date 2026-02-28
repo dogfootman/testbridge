@@ -1,0 +1,87 @@
+# TestBridge 화면 목록
+# Version: 2.0
+# 생성일: 2026-02-28
+
+version: "2.0"
+
+screens:
+  # 공통 화면
+  - id: S-01
+    name: 온보딩 / 랜딩 페이지
+    route: /
+    priority: MVP
+    file: landing.yaml
+
+  - id: S-02
+    name: 회원가입
+    route: /auth/signup
+    priority: MVP
+    file: signup.yaml
+
+  - id: S-03
+    name: 로그인
+    route: /auth/login
+    priority: MVP
+    file: login.yaml
+
+  - id: S-04
+    name: 마이페이지 / 프로필
+    route: /profile
+    priority: MVP
+    file: profile.yaml
+
+  - id: S-05
+    name: 알림 센터
+    route: /notifications
+    priority: MVP
+    file: notifications.yaml
+
+  # 개발자 화면
+  - id: D-01
+    name: 개발자 대시보드
+    route: /developer
+    priority: MVP
+    file: developer-dashboard.yaml
+
+  - id: D-02
+    name: 앱 등록
+    route: /developer/apps/new
+    priority: MVP
+    file: app-register.yaml
+
+  - id: D-03
+    name: 내 앱 목록
+    route: /developer/apps
+    priority: MVP
+    file: developer-apps.yaml
+
+  - id: D-04
+    name: 앱 상세 / 테스트 관리
+    route: /developer/apps/:id
+    priority: MVP
+    file: app-detail.yaml
+
+  # 테스터 화면
+  - id: T-01
+    name: 테스터 홈 / 앱 탐색
+    route: /tester
+    priority: MVP
+    file: tester-home.yaml
+
+  - id: T-02
+    name: 앱 상세 (테스터 뷰)
+    route: /tester/apps/:id
+    priority: MVP
+    file: app-detail-tester.yaml
+
+  - id: T-03
+    name: 내 테스트 현황
+    route: /tester/participations
+    priority: MVP
+    file: tester-participations.yaml
+
+  - id: T-04
+    name: 피드백 작성
+    route: /tester/participations/:id/feedback
+    priority: MVP
+    file: feedback-form.yaml

@@ -1,0 +1,177 @@
+# 공통 컴포넌트 정의
+# Version: 2.0
+
+version: "2.0"
+
+components:
+  # OAuth 로그인 버튼 그룹
+  oauth_buttons:
+    type: button_group
+    description: 소셜 로그인 버튼 그룹 (Google, 카카오, 네이버)
+    providers:
+      - GOOGLE
+      - KAKAO
+      - NAVER
+    usage:
+      - signup.yaml
+      - login.yaml
+
+  # 상태 필터 탭
+  status_tabs:
+    type: tabs
+    description: 상태별 필터링 탭
+    usage:
+      - developer-apps.yaml
+      - tester-participations.yaml
+      - notifications.yaml
+
+  # 빈 상태 표시
+  empty_state:
+    type: empty
+    description: 데이터가 없을 때 표시되는 빈 상태 컴포넌트
+    properties:
+      message: string
+      icon: string (optional)
+      action: button (optional)
+    usage:
+      - developer-apps.yaml
+      - tester-participations.yaml
+      - notifications.yaml
+
+  # 앱 카드
+  app_card:
+    type: card
+    description: 앱 정보를 표시하는 카드 컴포넌트
+    properties:
+      iconUrl: string
+      appName: string
+      categoryId: string
+      rewardAmount: number
+      rewardType: enum
+      status: enum
+      targetTesters: number
+    usage:
+      - tester-home.yaml
+      - developer-apps.yaml
+      - landing.yaml
+
+  # 프로필 카드
+  profile_card:
+    type: card
+    description: 사용자 프로필 요약 카드
+    properties:
+      profileImageUrl: string
+      nickname: string
+      role: enum
+      createdAt: datetime
+    usage:
+      - profile.yaml
+      - app-detail-tester.yaml
+
+  # 통계 카드
+  stat_card:
+    type: card
+    description: 수치 통계를 표시하는 카드 컴포넌트
+    properties:
+      label: string
+      value: number | string
+      icon: string (optional)
+      trend: "up" | "down" | "neutral" (optional)
+    usage:
+      - profile.yaml
+      - developer-dashboard.yaml
+
+  # 별점 입력
+  star_rating:
+    type: rating
+    description: 1~5점 별점 입력 컴포넌트
+    properties:
+      min: 1
+      max: 5
+      required: boolean
+    usage:
+      - feedback-form.yaml
+
+  # 평가 항목 그룹
+  rating_group:
+    type: form_group
+    description: 여러 항목에 대한 별점 평가 그룹
+    properties:
+      items: array
+      required: boolean
+    usage:
+      - feedback-form.yaml
+
+  # 진행 상황 바
+  progress_bar:
+    type: progress
+    description: 진행률을 시각화하는 프로그레스 바
+    properties:
+      current: number
+      total: number
+      showLabel: boolean
+    usage:
+      - app-detail.yaml
+      - tester-participations.yaml
+
+  # 신뢰도 배지
+  trust_badge:
+    type: badge
+    description: 테스터 신뢰도 배지 (Bronze/Silver/Gold/Diamond)
+    properties:
+      badge: "BRONZE" | "SILVER" | "GOLD" | "DIAMOND"
+      trustScore: number (0-100)
+    usage:
+      - profile.yaml
+
+  # 상태 배지
+  status_badge:
+    type: badge
+    description: 앱/참여 상태를 표시하는 배지
+    properties:
+      status: enum
+      color: string
+    usage:
+      - developer-apps.yaml
+      - tester-participations.yaml
+      - app-detail.yaml
+
+  # CTA 버튼
+  cta_button:
+    type: button
+    description: Call-to-Action 버튼
+    properties:
+      label: string
+      variant: "primary" | "secondary" | "outline"
+      action: string
+    usage:
+      - landing.yaml
+      - signup.yaml
+
+  # 위저드 단계 표시
+  wizard_steps:
+    type: stepper
+    description: 다단계 폼의 진행 상황 표시
+    properties:
+      steps: array
+      currentStep: number
+    usage:
+      - app-register.yaml
+
+  # 확인 모달
+  confirmation_modal:
+    type: modal
+    description: 중요 액션에 대한 확인 모달
+    properties:
+      title: string
+      message: string
+      confirmLabel: string
+      cancelLabel: string
+    usage:
+      - profile.yaml (회원탈퇴)
+      - app-detail.yaml (승인/거절)
+
+notes: |
+  이 컴포넌트들은 여러 화면에서 재사용됩니다.
+  각 화면 명세에서 data_source를 통해 데이터를 바인딩합니다.
+  새로운 공통 컴포넌트가 발견되면 이 파일에 추가합니다.
