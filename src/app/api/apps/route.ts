@@ -132,17 +132,45 @@ export async function POST(request: NextRequest) {
 
 /**
  * GET /api/apps
- * Get apps (filter by status, limit)
+ * Get apps (filter by status, categoryId, search, rewardMin, limit)
+ * @TASK T-01 - 테스터 홈 앱 탐색 필터링 지원
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const status = searchParams.get('status')
+    const categoryId = searchParams.get('categoryId')
+    const search = searchParams.get('search')
+    const rewardMin = searchParams.get('rewardMin')
     const limit = searchParams.get('limit')
 
-    const where: { status?: string } = {}
+    // Build where clause
+    const where: {
+      status?: string
+      categoryId?: number
+      appName?: { contains: string; mode: 'insensitive' }
+      rewardAmount?: { gte: number }
+    } = {}
+
     if (status) {
       where.status = status
+    }
+
+    if (categoryId) {
+      where.categoryId = parseInt(categoryId)
+    }
+
+    if (search && search.trim().length > 0) {
+      where.appName = {
+        contains: search.trim(),
+        mode: 'insensitive',
+      }
+    }
+
+    if (rewardMin) {
+      where.rewardAmount = {
+        gte: parseInt(rewardMin),
+      }
     }
 
     const apps = await prisma.app.findMany({
@@ -164,6 +192,11 @@ export async function GET(request: NextRequest) {
             id: true,
             name: true,
             icon: true,
+          },
+        },
+        _count: {
+          select: {
+            participations: true,
           },
         },
       },
